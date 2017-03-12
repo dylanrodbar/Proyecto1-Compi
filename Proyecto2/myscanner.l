@@ -1,5 +1,6 @@
 %{
 #include "myscanner.h"
+void yyerror(char *,char *, int);
 %}
 
 %%
@@ -38,7 +39,7 @@
 "while"			  return KEYWORD;
 
 "/*"[a-zA-Z]*[_a-zA-Z0-9]*"*/"* return CONSTANT;
-"//"[a-zA-Z]*[_a-zA-Z0-9]*     return CONSTANT;
+"//"[a-zA-Z]*[_a-zA-Z0-9]*      return CONSTANT;
 
 
 "{"                       return PUNTUACTOR;
@@ -76,7 +77,7 @@
 
                   
 [ \t\n]			  ;
-.			  printf("Caracter inesperado.\n");
+.			  yyerror("Error léxico con \"%s\", en línea %i.\n",yytext,yylineno);
 
 
 %%

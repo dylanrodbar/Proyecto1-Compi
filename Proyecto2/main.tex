@@ -3,22 +3,35 @@
 \usetheme{Boadilla}
  
  
-\title{Analizador Lexico}
+\title{Analizador L\'exico}
 \subtitle{Proyecto 1}
-\author{Ariana Bermudez,Ximena Bolanos, Dylan Rodriguez}
-\institute{Instituto Tecnologico de Costa Rica}
+\author{Ariana Berm\'udez,Ximena Bola\~nos, Dylan Rodr\'iguez}
+\institute{Instituto Tecnol\'ogico de Costa Rica}
 \date{\today}
 \begin{document}
 \begin{frame}
-\textcolor{yellow}{/*hola*/} \textcolor{blue}{int} \textcolor{green}{i} \textcolor{pink}{=} \textcolor{red}{0} \textcolor{purple}{;} \textcolor{blue}{while} \textcolor{purple}{(} \textcolor{green}{i} \textcolor{pink}{<} \textcolor{red}{10} \textcolor{purple}{)} \textcolor{purple}{{} \textcolor{green}{i} \textcolor{pink}{++} \textcolor{purple}{;} \textcolor{purple}{}} \textcolor{white}{} \end{frame}
+ \titlepage 
+ \end{frame}\begin{frame}
+ \frametitle{An\'alisis L\'exico}
+ \end{frame}\begin{frame}
+ \frametitle{FLEX}
+ Herramienta utilizada para realizar \'escaneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\'un la necesidad del programador. \\ Este genera un c\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\'on yylex() la cu\'al se encarga de analizar el c\'odigo fuente. \end{frame}\begin{frame}
+\frametitle{C\'odigo Analizado}
+\textcolor{purple}{/*hola*/} \textcolor{magenta}{int} \textcolor{green}{i} \textcolor{blue}{=} \textcolor{red}{0} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{while} \textcolor{orange}{(} \textcolor{green}{i} \colorbox{red}{.}\textcolor{blue}{!=} \textcolor{red}{10} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{green}{i} \textcolor{blue}{++} \textcolor{orange}{;} \\ 
+ \textcolor{orange}{\}} \\ 
+ \textcolor{white}{} \end{frame}
 \begin{frame}
+\frametitle{Histograma}
 \begin{tikzpicture}
 \begin{axis}[ybar interval, ymax=18, ymin=0, minor y tick num = 3]
-\addplot coordinates { (0 , 0) (1 , 2) (2 , 2) (3 , 3) (4 , 2) (5 , 3) (6 , 6)  (7, 0) }; 
+\addplot coordinates { (1 , 2) (2 , 2) (3 , 3) (4 , 2) (5 , 3) (6 , 6)  (7, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
 \begin{frame}
+\frametitle{Histograma tipo Pastel}
 \def\angle{0}
 \def\radius{3}
 \def\cyclelist{{"yellow","blue","red","green"}}
@@ -26,7 +39,6 @@
 \newcount\ind \ind=-1
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-0/NULL,
 11/KEYWORD,
 11/INTEGER,
 16/IDENTIFIER,
