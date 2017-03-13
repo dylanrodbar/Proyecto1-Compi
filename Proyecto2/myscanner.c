@@ -71,8 +71,8 @@ void inicializarBeamer(void){
 }
 
 void addExplanation(){
-    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{An\\'alisis L\\'exico}\n Se hizo un analizador l\\'exico con la ayuda de la herramienta Flex, para el lenguaje C, este analizador encuentra los tokens y busca su tipo, y incrementa el contador de ese tipo para luego generar histogramas y gr\\'aficos de queques. Estos gr\\'aficos son mostrados en una presentaci\\'on de beamer, que ser\\'a tambi\\'en la salida del Scanner. \\end{frame}");
-    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{FLEX}\n Herramienta utilizada para realizar \\'escaneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\\'un la necesidad del programador. \\\\ Este genera un c\\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\\'on yylex() la cu\\'al se encarga de analizar el c\\'odigo fuente. Busca la librer\\'ia –lfl después de ser compilado y se enlaza con ella, para dar como resultado un ejecutable. \\\\ \n ");
+    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{An\\'alisis L\\'exico}\n Se hizo un analizador l\\'exico con la ayuda de la herramienta Flex, para el lenguaje C y que corre en C, este analizador encuentra los tokens y busca su tipo, e incrementa el contador de ese tipo para luego generar histogramas y gr\\'aficos de pastel. Estos gr\\'aficos son mostrados en una presentaci\\'on de beamer, que ser\\'a tambi\\'en la salida del Scanner. En la presentaci\\'on se definieron los \\colorbox{red}{errores} con un subrayado rojo,y para los token se defini\\'o:\\begin{itemize} \\item magenta para los \\textcolor{magenta} {KEYWORD}  \\item rojo para los \\textcolor{red}{INTEGER} \\item verde para los \\textcolor{green} {IDENTIFIER} \\item morado para los \\textcolor{purple}{CONSTANT} \\item azul para los \\textcolor{blue} {OPERATOR} \\item naranja para los \\textcolor{orange} {PUNTUACTOR} \\end{itemize} \\end{frame}");
+    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{FLEX}\n Herramienta utilizada para realizar esc\\'aneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\\'un la necesidad del programador. \\\\ Este genera un c\\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\\'on yylex() la cu\\'al se encarga de analizar el c\\'odigo fuente. Busca la librer\\'ia –lfl después de ser compilado y se enlaza con ella, para dar como resultado un ejecutable. \\\\ \n ");
     strcat(CodBeamer, "El fichero de entrada de flex tiene 3 secciones, y tiene que verse como:\\\\ \n ");
 
     strcat(CodBeamer, "\\textcolor{blue}{definiciones \\\\ \\\%\\\% \\\\ reglas \\\\ \\\%\\\% \\\\\ c\\'odigo de usuario} \\\\ \n");
@@ -93,6 +93,13 @@ void addExplanation(){
     strcat(CodBeamer, "\\end{tabular} \n\\end{table} \n");  
     strcat(CodBeamer, "El yylex() es una funci\\'on que procesa tokens desde donde lo dejaron la \\'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\\'on"); 
     //strcat(CodBeamer, ""); 
+    strcat(CodBeamer, "\\end{frame}\n"); 
+
+        strcat(CodBeamer,"\\begin{frame}\n\\frametitle{FLEX - continuaci\\'on} \n");
+    strcat(CodBeamer, "\\textbf{Acciones} \\newline \n"); 
+    strcat(CodBeamer,"Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \\%array y as\\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\\\");
+    strcat(CodBeamer,"Directivas especiales:\\begin{itemize} \\item ECHO: copia yytext a la salida del esc\\'aner  \\item BEGIN: pone al esc\\'aner en la codici\\'on de arranque correspondiente. \\item REJECT: ordena a proceder con al \"segunda mejor regla.\" \\item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\\end{itemize}");
+	
     strcat(CodBeamer, "\\end{frame}\n"); 
 
 }

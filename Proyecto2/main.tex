@@ -13,9 +13,9 @@
  \titlepage 
  \end{frame}\begin{frame}
  \frametitle{An\'alisis L\'exico}
- Se hizo un analizador l\'exico con la ayuda de la herramienta Flex, para el lenguaje C, este analizador encuentra los tokens y busca su tipo, y incrementa el contador de ese tipo para luego generar histogramas y gr\'aficos de queques. Estos gr\'aficos son mostrados en una presentaci\'on de beamer, que ser\'a tambi\'en la salida del Scanner. \end{frame}\begin{frame}
+ Se hizo un analizador l\'exico con la ayuda de la herramienta Flex, para el lenguaje C y que corre en C, este analizador encuentra los tokens y busca su tipo, e incrementa el contador de ese tipo para luego generar histogramas y gr\'aficos de pastel. Estos gr\'aficos son mostrados en una presentaci\'on de beamer, que ser\'a tambi\'en la salida del Scanner. En la presentaci\'on se definieron los \colorbox{red}{errores} con un subrayado rojo,y para los token se defini\'o:\begin{itemize} \item magenta para los \textcolor{magenta} {KEYWORD}  \item rojo para los \textcolor{red}{INTEGER} \item verde para los \textcolor{green} {IDENTIFIER} \item morado para los \textcolor{purple}{CONSTANT} \item azul para los \textcolor{blue} {OPERATOR} \item naranja para los \textcolor{orange} {PUNTUACTOR} \end{itemize} \end{frame}\begin{frame}
  \frametitle{FLEX}
- Herramienta utilizada para realizar \'escaneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\'un la necesidad del programador. \\ Este genera un c\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\'on yylex() la cu\'al se encarga de analizar el c\'odigo fuente. Busca la librer\'ia –lfl después de ser compilado y se enlaza con ella, para dar como resultado un ejecutable. \\ 
+ Herramienta utilizada para realizar esc\'aneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\'un la necesidad del programador. \\ Este genera un c\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\'on yylex() la cu\'al se encarga de analizar el c\'odigo fuente. Busca la librer\'ia –lfl después de ser compilado y se enlaza con ella, para dar como resultado un ejecutable. \\ 
  El fichero de entrada de flex tiene 3 secciones, y tiene que verse como:\\ 
  \textcolor{blue}{definiciones \\ \%\% \\ reglas \\ \%\% \\ c\'odigo de usuario} \\ 
 \end{frame}
@@ -42,6 +42,10 @@ Todo patr\'on tiene una acci\'on asociada. Existen varias acciones, por ejemplo:
 \end{tabular} 
 \end{table} 
 El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\'on\end{frame}
+\begin{frame}
+\frametitle{FLEX - continuaci\'on} 
+\textbf{Acciones} \newline 
+Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \%array y as\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\Directivas especiales:\begin{itemize} \item ECHO: copia yytext a la salida del esc\'aner  \item BEGIN: pone al esc\'aner en la codici\'on de arranque correspondiente. \item REJECT: ordena a proceder con al "segunda mejor regla." \item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\end{itemize}\end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
 \textcolor{purple}{/*hola*/} \textcolor{magenta}{int} \textcolor{green}{i} \textcolor{blue}{=} \textcolor{red}{0} \textcolor{orange}{;} \\ 
