@@ -37,7 +37,7 @@ bool seLeyoArchivo(void){
 
 }
 
-/*Función que se encarga de cerrar el archivo*/
+/*Función que se encarga de cerrar el archivo*/ 
 void cerrarArchivo(void){
     fclose(file);
 }
@@ -65,11 +65,39 @@ void inicializarBeamer(void){
     strcat(CodBeamer,"\\date{\\today}\n");
     strcat(CodBeamer,"\\begin{document}\n");
     strcat(CodBeamer, "\\begin{frame}\n \\titlepage \n \\end{frame}");
-    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{An\\'alisis L\\'exico}\n \\end{frame}");
-    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{FLEX}\n Herramienta utilizada para realizar \\'escaneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\\'un la necesidad del programador. \\\\ Este genera un c\\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\\'on yylex() la cu\\'al se encarga de analizar el c\\'odigo fuente. \\end{frame}");
+    addExplanation(); 
     strcat(CodBeamer,"\\begin{frame}\n");
     strcat(CodBeamer,"\\frametitle{C\\'odigo Analizado}\n");	
 }
+
+void addExplanation(){
+    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{An\\'alisis L\\'exico}\n Se hizo un analizador l\\'exico con la ayuda de la herramienta Flex, para el lenguaje C, este analizador encuentra los tokens y busca su tipo, y incrementa el contador de ese tipo para luego generar histogramas y gr\\'aficos de queques. Estos gr\\'aficos son mostrados en una presentaci\\'on de beamer, que ser\\'a tambi\\'en la salida del Scanner. \\end{frame}");
+    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{FLEX}\n Herramienta utilizada para realizar \\'escaneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\\'un la necesidad del programador. \\\\ Este genera un c\\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\\'on yylex() la cu\\'al se encarga de analizar el c\\'odigo fuente. Busca la librer\\'ia –lfl después de ser compilado y se enlaza con ella, para dar como resultado un ejecutable. \\\\ \n ");
+    strcat(CodBeamer, "El fichero de entrada de flex tiene 3 secciones, y tiene que verse como:\\\\ \n ");
+
+    strcat(CodBeamer, "\\textcolor{blue}{definiciones \\\\ \\\%\\\% \\\\ reglas \\\\ \\\%\\\% \\\\\ c\\'odigo de usuario} \\\\ \n");
+    strcat(CodBeamer,"\\end{frame}\n");
+    strcat(CodBeamer,"\\begin{frame}\n");
+    strcat(CodBeamer, "Las definiciones contienen las declaraciones de nombres, y condiciones de arranque. Un ejemplo de nuestro programa es: \\newline \n"); 
+    strcat(CodBeamer, "\\textcolor{red}{[a-zA-Z][\\_a-zA-Z0-9]*   return IDENTIFIER; \\newline [0-9][0-9]*    return INTEGER;} \\newline \n"); 
+    strcat(CodBeamer, "Luego de definir estos campos se procede a explicar como funciona flex, el flex asocia las entradas, \\textbf{?`pero c\\'omo lo hace?}\\newline \n");
+    strcat(CodBeamer, "El esc\\'aner analiza poco a poco las cadenas hasta que concuerden con alg\\'un patr\\'on propuesto por el programador. Si se puede emparejar m\\'as de una forma entonces tiene prioridad quien pueda asociar m\\'as texto y si en ese caso tambi\\'en son iguales entonces se elige por medio de quien est\\'e antes en el fichero de entrada.\\newline \nEl token tendr\\'a asociado el puntero a caracter global \\textbf{yytext}, y la longitud en la variable global entera \\textbf{yyleng}. Si no hay forma de asociarlo, se usa la regla por defecto. \\newline \n");  
+    strcat(CodBeamer,"\\end{frame}\n");
+    strcat(CodBeamer,"\\begin{frame}\n\\frametitle{FLEX - continuaci\\'on} \n");
+    strcat(CodBeamer, "\\textbf{Acciones} \\newline \n"); 
+    strcat(CodBeamer, "Todo patr\\'on tiene una acci\\'on asociada. Existen varias acciones, por ejemplo: si se pone \\newline \n"); 
+    strcat(CodBeamer, "\\begin{table}[]\n\\centering\n\\caption{Acciones}\n\\label{Acciones}\n\\begin{tabular}{|l|l|}\n \\hline \n"); 
+    strcat(CodBeamer, "\\\%\\\% \"texto\" & Har\\'a que se borren todas sus aparciones en la entrada. \\\\ \\hline \n");
+    strcat(CodBeamer, "\\{ & \\begin{tabular}[c]{@{}l@{}}Tomar\\'a todo eso como parte de la acci\\'on hasta \\\\ que encuentre la llave que lo cierra, \\}.\\end{tabular} \\\\ \\hline \n");
+    strcat(CodBeamer, "| & Hace que la acci\\'on actual aplique tambi\\'en para la siguiente. \\\\ \\hline  \n");
+    strcat(CodBeamer, "\\end{tabular} \n\\end{table} \n");  
+    strcat(CodBeamer, "El yylex() es una funci\\'on que procesa tokens desde donde lo dejaron la \\'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\\'on"); 
+    //strcat(CodBeamer, ""); 
+    strcat(CodBeamer, "\\end{frame}\n"); 
+
+}
+
+
 void finalizarBeamer(void){
     strcat(CodBeamer,"\n\\end{frame}\n");
     strcat(CodBeamer,"\\end{document}\n");

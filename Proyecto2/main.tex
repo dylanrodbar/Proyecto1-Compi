@@ -13,9 +13,36 @@
  \titlepage 
  \end{frame}\begin{frame}
  \frametitle{An\'alisis L\'exico}
- \end{frame}\begin{frame}
+ Se hizo un analizador l\'exico con la ayuda de la herramienta Flex, para el lenguaje C, este analizador encuentra los tokens y busca su tipo, y incrementa el contador de ese tipo para luego generar histogramas y gr\'aficos de queques. Estos gr\'aficos son mostrados en una presentaci\'on de beamer, que ser\'a tambi\'en la salida del Scanner. \end{frame}\begin{frame}
  \frametitle{FLEX}
- Herramienta utilizada para realizar \'escaneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\'un la necesidad del programador. \\ Este genera un c\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\'on yylex() la cu\'al se encarga de analizar el c\'odigo fuente. \end{frame}\begin{frame}
+ Herramienta utilizada para realizar \'escaneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\'un la necesidad del programador. \\ Este genera un c\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\'on yylex() la cu\'al se encarga de analizar el c\'odigo fuente. Busca la librer\'ia –lfl después de ser compilado y se enlaza con ella, para dar como resultado un ejecutable. \\ 
+ El fichero de entrada de flex tiene 3 secciones, y tiene que verse como:\\ 
+ \textcolor{blue}{definiciones \\ \%\% \\ reglas \\ \%\% \\ c\'odigo de usuario} \\ 
+\end{frame}
+\begin{frame}
+Las definiciones contienen las declaraciones de nombres, y condiciones de arranque. Un ejemplo de nuestro programa es: \newline 
+\textcolor{red}{[a-zA-Z][\_a-zA-Z0-9]*   return IDENTIFIER; \newline [0-9][0-9]*    return INTEGER;} \newline 
+Luego de definir estos campos se procede a explicar como funciona flex, el flex asocia las entradas, \textbf{?`pero c\'omo lo hace?}\newline 
+El esc\'aner analiza poco a poco las cadenas hasta que concuerden con alg\'un patr\'on propuesto por el programador. Si se puede emparejar m\'as de una forma entonces tiene prioridad quien pueda asociar m\'as texto y si en ese caso tambi\'en son iguales entonces se elige por medio de quien est\'e antes en el fichero de entrada.\newline 
+El token tendr\'a asociado el puntero a caracter global \textbf{yytext}, y la longitud en la variable global entera \textbf{yyleng}. Si no hay forma de asociarlo, se usa la regla por defecto. \newline 
+\end{frame}
+\begin{frame}
+\frametitle{FLEX - continuaci\'on} 
+\textbf{Acciones} \newline 
+Todo patr\'on tiene una acci\'on asociada. Existen varias acciones, por ejemplo: si se pone \newline 
+\begin{table}[]
+\centering
+\caption{Acciones}
+\label{Acciones}
+\begin{tabular}{|l|l|}
+ \hline 
+\%\% "texto" & Har\'a que se borren todas sus aparciones en la entrada. \\ \hline 
+\{ & \begin{tabular}[c]{@{}l@{}}Tomar\'a todo eso como parte de la acci\'on hasta \\ que encuentre la llave que lo cierra, \}.\end{tabular} \\ \hline 
+| & Hace que la acci\'on actual aplique tambi\'en para la siguiente. \\ \hline  
+\end{tabular} 
+\end{table} 
+El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\'on\end{frame}
+\begin{frame}
 \frametitle{C\'odigo Analizado}
 \textcolor{purple}{/*hola*/} \textcolor{magenta}{int} \textcolor{green}{i} \textcolor{blue}{=} \textcolor{red}{0} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{while} \textcolor{orange}{(} \textcolor{green}{i} \colorbox{red}{.}\textcolor{blue}{!=} \textcolor{red}{10} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
