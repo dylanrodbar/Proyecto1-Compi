@@ -1,83 +1,19 @@
 %{
 #include "myscanner.h"
-void yyerror(char *,char *, int);
 %}
 
 %%
 
-"auto"			  return KEYWORD;
-"break"			  return KEYWORD;
-"case"			  return KEYWORD;
-"char"			  return KEYWORD;
-"const"			  return KEYWORD;
-"continue"	          return KEYWORD;
-"default"		  return KEYWORD;
-"do"			  return KEYWORD;
-"double"		  return KEYWORD;
-"else"			  return KEYWORD;
-"enum"			  return KEYWORD;
-"extern"		  return KEYWORD;
-"float"			  return KEYWORD;
-"for"			  return KEYWORD;
-"goto"			  return KEYWORD;
-"if"			  return KEYWORD;
-"int"			  return KEYWORD;
-"long"			  return KEYWORD;
-"register"		  return KEYWORD;
-"return"		  return KEYWORD;
-"short"			  return KEYWORD;
-"signed"		  return KEYWORD;
-"sizeof"		  return KEYWORD;
-"static"		  return KEYWORD;
-"struct"		  return KEYWORD;
-"switch"		  return KEYWORD;
-"typedef"		  return KEYWORD;
-"union"			  return KEYWORD;
-"unsigned"		  return KEYWORD;
-"void"			  return KEYWORD;
-"volatile"		  return KEYWORD;
-"while"			  return KEYWORD;
-
-"/*"[a-zA-Z]*[_a-zA-Z0-9]*"*/"* return CONSTANT;
-"//"[a-zA-Z]*[_a-zA-Z0-9]*      return CONSTANT;
-
-
-"{"                       return PUNTUACTOR;
-"}"                       return PUNTUACTOR;
-","                       return PUNTUACTOR;
-"("                       return PUNTUACTOR;
-")"                       return PUNTUACTOR;
-";"                       return PUNTUACTOR;
-
-
-
-"+"			  return OPERATOR;	
-"-"			  return OPERATOR;
-"/"			  return OPERATOR;
-"%"			  return OPERATOR;
-"*"			  return OPERATOR;
-"++"			  return OPERATOR;
-"--"			  return OPERATOR;
-"="			  return OPERATOR;
-"<"			  return OPERATOR;
-">"			  return OPERATOR;
-"<="			  return OPERATOR;
-"!="			  return OPERATOR;
-"="			  return OPERATOR;
-"+="			  return OPERATOR;
-"-="			  return OPERATOR;
-"*="			  return OPERATOR;
-"/="			  return OPERATOR;
-"%="			  return OPERATOR;
-"!="			  return OPERATOR;	
-
 [a-zA-Z][_a-zA-Z0-9]*	  return IDENTIFIER;
-[0-9][0-9]*		  return INTEGER;
-
-
-                  
+[1-9][0-9]*		  return INTEGER;
+","                       return COMMA;
+"("                       return LPAREN;
+")"                       return RPAREN;
+"{"                       return LCURLYBRACE;
+"}"                       return RCURLYBRACE;
+":"                       return COLON;
 [ \t\n]			  ;
-.			  yyerror("Error léxico con \"%s\", en línea %i.\n",yytext,yylineno);
+.			  printf("caracter inesperado\n");
 
 
 %%

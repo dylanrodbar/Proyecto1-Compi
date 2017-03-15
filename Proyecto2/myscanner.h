@@ -1,9 +1,15 @@
-#define KEYWORD 1
+#define IDENTIFIER 1
 #define INTEGER 2
-#define IDENTIFIER 3
-#define CONSTANT 4
-#define OPERATOR 5
-#define PUNTUACTOR 6
+#define COMMA 3
+#define LPAREN 4
+#define RPAREN 5
+#define LCURLYBRACE 6
+#define RCURLYBRACE 7
+#define IF 8
+#define ELSE 9
+#define CASE 10
+#define SWITCH 11
+#define COLON 12
 
 
 
