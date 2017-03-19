@@ -1,52 +1,33 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "myscanner.h"
-#include "estructuras.h"
-#include <string.h>
-#include <stdlib.h>
 
 extern int yylex();
 extern int yylineno;
 extern char* yytext;
-
-char *includes[] = {};
-
-struct defineS defines[]; 
-int numIncludes = -1; //contador de los includes que se tendrán en el array de chars includes
-
-int numDefines = -1;  //contador de los defines que se tendrán en el array de structs defines
-
-FILE *tmpFile; //Es el archivo en el que se escribirá el código de entrada del scanner
 
 FILE *beamer;
 char *names[] ={NULL,"auto","break","case","char","const","continue","default","do",
 "double","else","enum","extern","float","for","goto","if","int","long",
 "register","return","short","signed","sizeof","static","struct",
 "switch","typedef","union","unsigned","void","volatile","while"};
-char *color[]={"white","magenta","red","green", "purple","blue","orange"};
-int numtokens[]={0,0,0,0,0,0,0};
+char *color[]={"white","magenta","red","green", "purple","blue","orange","pink"};
+int numtokens[]={0,0,0,0,0,0,0,0};
 int cantidad = 0; // es la cantidad total de tokens, como la suma de cada [i] de numtokens
-
+FILE *file;
 
 char *CodBeamer[5000000];
-
-
-
-
-
-FILE * leerArchivo(void){
-    //printf("Ruta del archivo: \n");
-    //char NombreArchivo[150];
-    //gets(NombreArchivo);
-    FILE *file;    //Es el archivo de entrada del preprocesador
-    file = fopen("hola.c", "r");
-    return file;
-} 
+void leerArchivo(void){
+    printf("Ruta del archivo: \n");
+    char NombreArchivo[150];
+    gets(NombreArchivo);
+    file = fopen(NombreArchivo, "r");
+}
 
 
 
 /*Función que indica si se leyó o no correctamente el archivo*/
-bool seLeyoArchivo(FILE *file){
+bool seLeyoArchivo(void){
     if (file) {
         return true;
 
@@ -56,16 +37,19 @@ bool seLeyoArchivo(FILE *file){
 
 }
 
-/*Función que se encarga de cerrar el archivo*/
-void cerrarArchivo(FILE *file){
+/*Función que se encarga de cerrar el archivo*/ 
+void cerrarArchivo(void){
     fclose(file);
 }
 
-
-/*Función que obtiene el siguiente token por medio de una llamada a flex*/
 int nextToken(void)
-{
+{   
     return yylex();
+}
+
+void preprocess(void)
+{
+    
 }
 
 
@@ -87,7 +71,7 @@ void inicializarBeamer(void){
 }
 
 void addExplanation(){
-    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{An\\'alisis L\\'exico}\n Se hizo un analizador l\\'exico con la ayuda de la herramienta Flex, para el lenguaje C y que corre en C, este analizador encuentra los tokens y busca su tipo, e incrementa el contador de ese tipo para luego generar histogramas y gr\\'aficos de pastel. Estos gr\\'aficos son mostrados en una presentaci\\'on de beamer, que ser\\'a tambi\\'en la salida del Scanner. En la presentaci\\'on se definieron los \\colorbox{red}{errores} con un subrayado rojo,y para los token se defini\\'o:\\begin{itemize} \\item magenta para los \\textcolor{magenta} {KEYWORD}  \\item rojo para los \\textcolor{red}{INTEGER} \\item verde para los \\textcolor{green} {IDENTIFIER} \\item morado para los \\textcolor{purple}{CONSTANT} \\item azul para los \\textcolor{blue} {OPERATOR} \\item naranja para los \\textcolor{orange} {PUNTUACTOR} \\end{itemize} \\end{frame}");
+    strcat(CodBeamer, "\\begin{frame}\n \\frametitle{An\\'alisis L\\'exico}\n Se hizo un analizador l\\'exico con la ayuda de la herramienta Flex, para el lenguaje C y que corre en C, este analizador encuentra los tokens y busca su tipo, e incrementa el contador de ese tipo para luego generar histogramas y gr\\'aficos de pastel. Estos gr\\'aficos son mostrados en una presentaci\\'on de beamer, que ser\\'a tambi\\'en la salida del Scanner. En la presentaci\\'on se definieron los \\colorbox{red}{errores} con un subrayado rojo,y para los token se defini\\'o:\\begin{itemize} \\item magenta para los \\textcolor{magenta} {KEYWORD}  \\item rojo para los \\textcolor{red}{INTEGER} \\item verde para los \\textcolor{green} {IDENTIFIER} \\item morado para los \\textcolor{purple}{CONSTANT} \\item azul para los \\textcolor{blue} {OPERATOR} \\item naranja para los \\textcolor{orange} {PUNTUACTOR} \\item rosado para los \\textcolor{pink} {LITERAL} \\end{itemize} \\end{frame}");
     strcat(CodBeamer, "\\begin{frame}\n \\frametitle{FLEX}\n Herramienta utilizada para realizar esc\\'aneres. Este toma los valores de entrada y genera los tokens correspondientes.Seg\\'un la necesidad del programador. \\\\ Este genera un c\\'odigo fuente en C que se va a nombrar lex.yy.c en el cual se genera una funci\\'on yylex() la cu\\'al se encarga de analizar el c\\'odigo fuente. Busca la librer\\'ia –lfl después de ser compilado y se enlaza con ella, para dar como resultado un ejecutable. \\\\ \n ");
     strcat(CodBeamer, "El fichero de entrada de flex tiene 3 secciones, y tiene que verse como:\\\\ \n ");
 
@@ -180,13 +164,13 @@ void generateHistogram(){
     strcat(CodBeamer,"\\frametitle{Histograma}\n"); 
     strcat(CodBeamer, "\\begin{tikzpicture}\n");
     strcat(CodBeamer, "\\begin{axis}[ybar interval, ymax=");
-    cantidad = numtokens[1] + numtokens[2] + numtokens[3] + numtokens[4] + numtokens[5] + numtokens[6];
+    cantidad = numtokens[1] + numtokens[2] + numtokens[3] + numtokens[4] + numtokens[5] + numtokens[6]+ numtokens[7];
     char max[15];
     sprintf(max, "%d", cantidad);
     strcat(CodBeamer, max);
     strcat(CodBeamer, ", ymin=0, minor y tick num = 3]\n"); 
     strcat(CodBeamer, "\\addplot coordinates { "); 
-    for(int i = 1; i < 7 ; i++){
+    for(int i = 1; i < 8 ; i++){
         strcat(CodBeamer, "("); 
         char strI[15];
         sprintf(strI, "%d", i);
@@ -197,7 +181,7 @@ void generateHistogram(){
         strcat(CodBeamer, strICantidad); 
         strcat(CodBeamer, ") "); 
     }
-    strcat(CodBeamer, " (7, 0) "); 
+    strcat(CodBeamer, " (8, 0) "); 
     strcat(CodBeamer, "}; \n\\end{axis}\n"); 
     strcat(CodBeamer, "\\end{tikzpicture}\n");
     strcat(CodBeamer,"\\end{frame}\n");
@@ -209,12 +193,12 @@ void generatePieChart(){
     strcat(CodBeamer,"\\frametitle{Histograma tipo Pastel}\n");
     strcat(CodBeamer, "\\def\\angle{0}\n");
     strcat(CodBeamer, "\\def\\radius{3}\n"); 
-    strcat(CodBeamer, "\\def\\cyclelist{{\"yellow\",\"blue\",\"red\",\"green\"}}\n");
+    strcat(CodBeamer, "\\def\\cyclelist{{\"yellow\",\"blue\",\"red\",\"green\",\"orange\",\"purple\"}}\n");
     strcat(CodBeamer, "\\newcount\\cyclecount \\cyclecount=-1\n");
     strcat(CodBeamer, "\\newcount\\ind \\ind=-1\n");
     strcat(CodBeamer, "\\begin{tikzpicture}[nodes = {font=\\sffamily}]\n");
     strcat(CodBeamer, "\\foreach \\percent/\\name in {\n");
-    for(int i = 1; i < 7 ; i++){
+    for(int i = 1; i < 8 ; i++){
      char strICantidad[15];
         char strIPercent[15];
         int percentage = numtokens[i] * 100 / cantidad; 
@@ -222,7 +206,7 @@ void generatePieChart(){
         strcat(CodBeamer, strIPercent); 
         strcat(CodBeamer, "/");
         identifierTokenType(i); 
-        if (i == 6){
+        if (i == 7){
             strcat(CodBeamer, "\n");
         }
         else
@@ -275,6 +259,9 @@ void identifierTokenType(int i){
         case 6: 
             strcat(CodBeamer, "PUNTUACTOR"); 
             break; 
+	case 7: 
+            strcat(CodBeamer, "LITERAL"); 
+            break; 
     }
 }
 void yyerror(char *texto,char *simbolo, int linea){
@@ -284,253 +271,10 @@ void yyerror(char *texto,char *simbolo, int linea){
      strcat(CodBeamer,"}");
 
 };
-
-
-
-
-
-/*Función encargada de evaluar si ya existe una librería de inclusión en la tabla de inclusiones*/
-bool existeInclude(char include[25])
-{
-    for(int i = 0; i<numIncludes; i++)
-    {
-        if(strcmp(includes[i], include) == 0)
-        {
-            return true;
-        }
-
-    }
-    
-    return false;
-
-}
-
-
-/*Función encargada de evaluar si ya existe un define en la tabla de definiciones*/
-int existeDefine(char define[25])
-{
-    for(int m = 0; m<=numDefines; m++)
-    {
-        if(strcmp(defines[m].palabra, define) == 0)
-        {
-            return m;
-        }
-
-    }
-    
-    return -1;
-
-}
-
-/*Función encargada de retornar el valor de un define específico tomado de la tabla de definiciones*/
-char *valorDefine(char palabra[25])
-{
-    int ex = existeDefine(palabra);
-    if(ex == -1)
-    {
-        return palabra;
-    }
-
-    else
-    { 
-        return valorDefine(defines[ex].vDefine);
-    }
-    
-}
-
-
-
-/*Función encargada de buscar los #include o #define y manejarlos*/
-void preprocess(FILE *file)
-{
-    int in_char;
- 
-    char palabra[25] = "";
-    char vDefine[25] = "";
-    char tipo[7] = "";
-    
-    
-    int j = 0; //contador para tipo
-    int i = 0; //contador para palabra
-    int a = 0; //contador para vDefine
-    
-    while ((in_char = getc(file)) != EOF)
-    {
-        //Se se encuentra un #, se toman los valores correspondientes seguidos de dicho símbolo
-        if (in_char == '#')
-        {
-            
-            in_char = getc(file);
-            //Se llena tipo, el cual puede tomar el valor de include o define
-            while (!isspace(in_char))
-            {
-                  tipo[j] = in_char;
-                  j++;
-                  in_char = getc(file);
-            }
-            
-            in_char = getc(file);
-
-            //Se toma el valor después del include o define
-            while (!isspace(in_char))
-            {
-                  if(in_char != '"')
-                  {
-                      palabra[i] = in_char;
-                      i++;
-                  }
-
-                  in_char = getc(file);
-                  
-            }
-            
-
-            //Si tipo es include
-            if(strcmp(tipo, "include") == 0)
-            {
-                
-                    
-		/*Se evalúa si ya existe el include en la tabla de includes
-                Si ya existe, se notificará*/
-		if(existeInclude(palabra))
-		{
-		    printf("Inclusión duplicada de librería %s", palabra);
-		}
-
-		/*En caso contrario, se seguirán leyendo librerías*/
-		else
-		{
-		        
-		    numIncludes++;
-                    
-                    includes[numIncludes] = (char *)malloc(sizeof(char));                
-                    strcpy(includes[numIncludes], palabra);
-		    FILE *n = fopen(palabra, "r");
-		    preprocess(n);
-		}
-            }
-            
-            /*Se encuentra un define*/
-            else if(strcmp(tipo, "define") == 0)
-            {
-             
-                 in_char = getc(file);
-                 /*Se busca el valor asignado al identificador del define*/
-                 
-                 while (!isspace(in_char))
-                 {
-                      vDefine[a] = in_char;
-                      a++;
-                      in_char = getc(file);
-                  
-                 }
-                 
-                 
-
-
-                 numDefines++;
-                 
-                 
-                 int ex = existeDefine(palabra); 
-                 
-                 /*Si la palabra no existe en la tabla de defines, se agregará el nuevo elemento*/
-                 if(ex == -1)
-                 {
-
-                     
-                     
-                     
-                     strcpy(defines[numDefines].palabra, palabra);
-                     
-                     
-                     
-                     strcpy(defines[numDefines].vDefine, vDefine);
-                     
-                                          
-                     
-                   
-                     printf("%s\n", defines[0].palabra);
-                     printf("%s\n", defines[0].vDefine);
-                     
-                     
-                    
-                     
-                 }
-                 
-                 /*Si la palabra existe en la tabla de defines, se cambiará el valor del elemento por el nuevo encontrado*/
-                 else
-                 {   
-                     strcpy(defines[ex].vDefine, vDefine);
-                     numDefines--;
-                 }  
-                                   
-
-            }
-            
-            
-        }
-        else
-        {
-            //char palabra1[25] = "";
-
-            while (!isspace(in_char))
-            {
-
-                  palabra[i] = in_char;
-                  i++;
-                  in_char = getc(file);
-            
-            }
-
-            
-            
-            int existe = existeDefine(palabra); 
-            if(existe == -1)
-            {
-                fputs(palabra, tmpFile);
-                
-            }
-            else  
-            {
-                char *p = valorDefine(defines[existe].vDefine); 
-                fputs(p, tmpFile);
-            }
-            fputc(in_char, tmpFile);
-            
-             
-        }
-        
-        a=0;
-        j=0;
-        i=0;
-        memset(&palabra[0], 0, sizeof(palabra));
-        memset(&tipo[0], 0, sizeof(tipo));
-        memset(&vDefine[0], 0, sizeof(vDefine));
-        
-        
-        
-    }
-                       
-    
-}
-
-
 int main(void)
 {
-    FILE *f = leerArchivo();
-    if(seLeyoArchivo(f))
-    {
-        printf("Se pudo leer el archivo correctamente");
-        tmpFile = fopen("codigo.txt", "wt");
-        preprocess(f);
-    }
-    else
-    {
-        printf("No se pudo leer el archivo correctamente");
-    }    
-
-    //scanner();
-    return 0; 
+    scanner();
+    
 }
 
 
