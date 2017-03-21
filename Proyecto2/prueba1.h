@@ -1,5 +1,5 @@
 #define hola 10
-#define holi 50
+#define holi 3
 hola
 holi
 

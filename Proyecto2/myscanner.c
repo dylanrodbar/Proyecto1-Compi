@@ -1,10 +1,21 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "myscanner.h"
+#include "estructuras.h"
+#include <string.h>
+#include <stdlib.h>
 
 extern int yylex();
 extern int yylineno;
 extern char* yytext;
+
+char *includes[] = {};
+
+struct defineS defines[]; 
+int numIncludes = -1; //contador de los includes que se tendrán en el array de chars includes
+
+int numDefines = -1;  //contador de los defines que se tendrán en el array de structs defines
+FILE *tmpFile;
 
 FILE *beamer;
 char *names[] ={NULL,"auto","break","case","char","const","continue","default","do",
@@ -17,17 +28,24 @@ int cantidad = 0; // es la cantidad total de tokens, como la suma de cada [i] de
 FILE *file;
 
 char *CodBeamer[5000000];
-void leerArchivo(void){
-    printf("Ruta del archivo: \n");
-    char NombreArchivo[150];
-    gets(NombreArchivo);
-    file = fopen(NombreArchivo, "r");
-}
+
+
+
+
+
+FILE * leerArchivo(void){
+    //printf("Ruta del archivo: \n");
+    //char NombreArchivo[150];
+    //gets(NombreArchivo);
+    FILE *file;    //Es el archivo de entrada del preprocesador
+    file = fopen("hola.c", "r");
+    return file;
+} 
 
 
 
 /*Función que indica si se leyó o no correctamente el archivo*/
-bool seLeyoArchivo(void){
+bool seLeyoArchivo(FILE *file){
     if (file) {
         return true;
 
@@ -37,20 +55,18 @@ bool seLeyoArchivo(void){
 
 }
 
-/*Función que se encarga de cerrar el archivo*/ 
-void cerrarArchivo(void){
+/*Función que se encarga de cerrar el archivo*/
+void cerrarArchivo(FILE *file){
     fclose(file);
 }
+
+
 
 int nextToken(void)
 {   
     return yylex();
 }
 
-void preprocess(void)
-{
-    
-}
 
 
 void inicializarBeamer(void){
@@ -271,10 +287,260 @@ void yyerror(char *texto,char *simbolo, int linea){
      strcat(CodBeamer,"}");
 
 };
+
+
+
+
+/*Función encargada de evaluar si ya existe una librería de inclusión en la tabla de inclusiones*/
+bool existeInclude(char include[25])
+{
+    for(int i = 0; i<numIncludes; i++)
+    {
+        if(strcmp(includes[i], include) == 0)
+        {
+            return true;
+        }
+
+    }
+    
+    return false;
+
+}
+
+
+/*Función encargada de evaluar si ya existe un define en la tabla de definiciones*/
+int existeDefine(char define[25])
+{
+    for(int m = 0; m<=numDefines; m++)
+    {
+        if(strcmp(defines[m].palabra, define) == 0)
+        {
+            return m;
+        }
+
+    }
+    
+    return -1;
+
+}
+
+
+
+/*Función encargada de retornar el valor de un define específico tomado de la tabla de definiciones*/
+
+char *valorDefine(char *palabra)
+{
+    int ex = existeDefine(palabra);
+    if(ex == -1)
+    {
+        return palabra;
+    }
+
+    else
+    { 
+        return valorDefine(defines[ex].vDefine);
+    }
+    
+}
+
+
+
+/*Función encargada de buscar los #include o #define y manejarlos*/
+void preprocess(FILE *file)
+{
+    int in_char;
+ 
+    char palabra[25] = "";
+    char vDefine[300] = "";
+    char tipo[7] = "";
+    
+    
+    int j = 0; //contador para tipo
+    int i = 0; //contador para palabra
+    int a = 0; //contador para vDefine
+    
+    while ((in_char = getc(file)) != EOF)
+    {
+        //Se se encuentra un #, se toman los valores correspondientes seguidos de dicho símbolo
+        if (in_char == '#')
+        {
+            
+            in_char = getc(file);
+            //Se llena tipo, el cual puede tomar el valor de include o define
+            while (!isspace(in_char))
+            {
+                  tipo[j] = in_char;
+                  j++;
+                  in_char = getc(file);
+            }
+            
+            in_char = getc(file);
+
+            //Se toma el valor después del include o define
+            while (!isspace(in_char))
+            {
+                  if(in_char != '"')
+                  {
+                      palabra[i] = in_char;
+                      i++;
+                  }
+
+                  in_char = getc(file);
+                  
+            }
+            
+
+            //Si tipo es include
+            if(strcmp(tipo, "include") == 0)
+            {
+                
+                    
+		/*Se evalúa si ya existe el include en la tabla de includes
+                Si ya existe, se notificará*/
+		if(existeInclude(palabra))
+		{
+		    printf("Inclusión duplicada de librería %s", palabra);
+		}
+
+		/*En caso contrario, se seguirán leyendo librerías*/
+		else
+		{
+		        
+		    numIncludes++;
+                    
+                    includes[numIncludes] = (char *)malloc(sizeof(char));                
+                    strcpy(includes[numIncludes], palabra);
+		    FILE *n = fopen(palabra, "r");
+		    preprocess(n);
+		}
+            }
+            
+            /*Se encuentra un define*/
+            else if(strcmp(tipo, "define") == 0)
+            {
+             
+                 in_char = getc(file);
+                 /*Se busca el valor asignado al identificador del define*/
+                 
+		
+                 while (!isspace(in_char))
+                 {
+                      vDefine[a] = in_char;
+                      a++;
+                      in_char = getc(file);
+                  
+                 }
+                 
+                 printf("%s\n", vDefine);
+
+
+                 numDefines++;
+                 
+                 
+                 int ex = existeDefine(palabra); 
+                 
+                 /*Si la palabra no existe en la tabla de defines, se agregará el nuevo elemento*/
+                 if(ex == -1)
+                 {
+
+                     
+                     
+                     
+                     strcpy(defines[numDefines].palabra, palabra);
+                     
+                     
+                     
+                     strcpy(defines[numDefines].vDefine, vDefine);
+                     
+                                          
+                     
+                   
+                     printf("%s\n", defines[0].palabra);
+                     printf("%s\n", defines[0].vDefine);
+                     
+                     
+                    
+                     
+                 }
+                 
+                 /*Si la palabra existe en la tabla de defines, se cambiará el valor del elemento por el nuevo encontrado*/
+                 else
+                 {   
+                     strcpy(defines[ex].vDefine, vDefine);
+                     numDefines--;
+                 }  
+                                   
+
+            }
+            
+            
+        }
+        else
+        {
+            
+            //char palabra1[25] = "";
+            //printf("holiiiiiiiiiiiiiiiiiiiii");
+            while (!isspace(in_char))
+            {
+
+                  palabra[i] = in_char;
+                  i++;
+                  in_char = getc(file);
+            
+            }
+            
+            
+            
+            int existe = existeDefine(palabra); 
+            if(existe == -1)
+            {
+                fputs(palabra, tmpFile);
+                
+            }
+            else  
+            {
+                char *p = valorDefine(defines[existe].vDefine); 
+                fputs(p, tmpFile);
+            }
+            fputc(in_char, tmpFile);
+            
+             
+        }
+        
+        a=0;
+        j=0;
+        i=0;
+        memset(&palabra[0], 0, sizeof(palabra));
+        memset(&tipo[0], 0, sizeof(tipo));
+        memset(&vDefine[0], 0, sizeof(vDefine));
+        
+        
+        
+    }
+                       
+    
+}
+
+
 int main(void)
 {
-    scanner();
     
+    FILE *f = leerArchivo();
+    if(seLeyoArchivo(f))
+    {
+        printf("Se pudo leer el archivo correctamente");
+        tmpFile = fopen("config.c", "wt");
+        preprocess(f);
+        fclose(tmpFile);
+    }
+    else
+    {
+        printf("No se pudo leer el archivo correctamente");
+    }    
+    
+    scanner();
+    //system("pdflatex main.tex");
+    return 0; 
 }
 
 
