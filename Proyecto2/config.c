@@ -1,18 +1,3 @@
-10
-3
-
-bool holaa()
-{
-    int a = hola;
-    printf("Hello, its me");
-    return true;
-}
-
-int funcion()
-{
-   printf("Esto es una función");
-   return 0;
-}
 
 
 

@@ -1,6 +1,12 @@
 \documentclass{beamer}
 \usepackage{pgfplots}
-\usetheme{Boadilla}
+\usetheme{progressbar}
+ 
+ 
+\usecolortheme{crane}
+ 
+ 
+\setbeamercolor{frametitle}{fg=brown}
  
  
 \title{Analizador L\'exico}
@@ -9,6 +15,9 @@
 \institute{Instituto Tecnol\'ogico de Costa Rica}
 \date{\today}
 \begin{document}
+\setbeamercolor{frametitle}{fg=brown}
+ 
+ 
 \begin{frame}
  \titlepage 
  \end{frame}\begin{frame}
@@ -34,31 +43,35 @@ Todo patr\'on tiene una acci\'on asociada. Existen varias acciones, por ejemplo:
 \centering
 \caption{Acciones}
 \label{Acciones}
-\begin{tabular}{|l|l|}
- \hline 
-\%\% "texto" & Har\'a que se borren todas sus aparciones en la entrada. \\ \hline 
-\{ & \begin{tabular}[c]{@{}l@{}}Tomar\'a todo eso como parte de la acci\'on hasta \\ que encuentre la llave que lo cierra, \}.\end{tabular} \\ \hline 
-| & Hace que la acci\'on actual aplique tambi\'en para la siguiente. \\ \hline  
-\end{tabular} 
-\end{table} 
-El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\'on\end{frame}
+\begin{tabular}{lllll}
+\cline{1-2}
+\multicolumn{1}{|l|}{\%\% "texto"} & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Har\'a que se borren todas sus aparciones\\ en la entrada.\end{tabular}}                                    &  &  &  \\ \cline{1-2}
+\multicolumn{1}{|l|}{\{}           & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Tomar\'a todo eso como parte de la acci\'on hasta \\ que encuentre la llave que lo cierra, \}\end{tabular}} &  &  &  \\ \cline{1-2}
+\multicolumn{1}{|l|}{-}            & \multicolumn{1}{l|}{\begin{tabular}[c]{@{}l@{}}Hace que la acci\'on actual aplique tambi\'en\\ para la siguiente.\end{tabular}}                            &  &  &  \\ \cline{1-2}
+&                                                                                                                                                            &  &  & 
+\end{tabular}
+\end{table}
+
+
+\end{frame}
 \begin{frame}
 \frametitle{FLEX - continuaci\'on} 
 \textbf{Acciones} \newline 
+El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\'on \newline 
 Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \%array y as\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\Directivas especiales:\begin{itemize} \item ECHO: copia yytext a la salida del esc\'aner  \item BEGIN: pone al esc\'aner en la codici\'on de arranque correspondiente. \item REJECT: ordena a proceder con al "segunda mejor regla." \item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\end{itemize}\end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{red}{3} \textcolor{green}{bool} \textcolor{green}{holaa} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+\textcolor{red}{50} \textcolor{green}{bool} \textcolor{green}{hola} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
  \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{green}{hola} \textcolor{orange}{;} \\ 
  \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Hello, its me"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
  \textcolor{magenta}{int} \textcolor{green}{funcion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una función"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
+ \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una funcion"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{red}{0} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
  \textcolor{magenta}{int} \textcolor{green}{numero} \textcolor{blue}{=} \textcolor{red}{5} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{int} \textcolor{green}{h} \textcolor{blue}{=} \textcolor{red}{30} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{h} \textcolor{blue}{=} \textcolor{red}{20} \textcolor{orange}{;} \\ 
  \textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
@@ -71,19 +84,18 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{Histograma tipo Pastel}
 \def\angle{0}
-\def\radius{3}
-\def\cyclelist{{"yellow","blue","red","green","orange","purple"}}
-\newcount\cyclecount \cyclecount=-1
-\newcount\ind \ind=-1
+\def\radius{2}
+\def\cyclelist{{"magenta","red","green","purple","blue","orange", "pink"}}
+\newcount\cyclecount \cyclecount=1
+\newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-13/KEYWORD,
-11/INTEGER,
-22/IDENTIFIER,
-0/CONSTANT,
-6/OPERATOR,
-42/PUNTUACTOR,
-4/LITERAL
+13.0/KEYWORD,
+11.0/INTEGER,
+22.0/IDENTIFIER,
+ 6.0/OPERATOR,
+42.0/PUNTUACTOR,
+4.0/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1

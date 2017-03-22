@@ -1,9 +1,29 @@
+
+/*
+pero luego de eso puse: flex myscanner.l
+pero luego de eso puse: flex myscanner.l
+Mensaje reenviado: Xime [11/3/17] 
+./myscanner <config.in
+pdflatex main.tex
+envice main.pdf
+gcc myscanner.c lex.yy.c -o myscanner
+pdflatex main.tex
+
+\usetheme{progressbar}
+\usetheme{progressbar}
+\usecolortheme{crane}
+\usepackage{tgheros}
+\setbeamercolor{frametitle}{fg=brown}
+
+*/
+
 #include <stdio.h>
 #include <stdbool.h>
 #include "myscanner.h"
 #include "estructuras.h"
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 extern int yylex();
 extern int yylineno;
@@ -24,6 +44,7 @@ char *names[] ={NULL,"auto","break","case","char","const","continue","default","
 "switch","typedef","union","unsigned","void","volatile","while"};
 char *color[]={"white","magenta","red","green", "purple","blue","orange","pink"};
 int numtokens[]={0,0,0,0,0,0,0,0};
+float percentTokens[]={0,0,0,0,0,0,0,0};
 int cantidad = 0; // es la cantidad total de tokens, como la suma de cada [i] de numtokens
 FILE *file;
 
@@ -61,7 +82,6 @@ void cerrarArchivo(FILE *file){
 }
 
 
-
 int nextToken(void)
 {   
     return yylex();
@@ -73,13 +93,17 @@ void inicializarBeamer(void){
     beamer=fopen("main.tex", "w");
     strcat(CodBeamer,"\\documentclass{beamer}\n");
     strcat(CodBeamer, "\\usepackage{pgfplots}\n"); 
-    strcat(CodBeamer,"\\usetheme{Boadilla}\n \n \n");
+    strcat(CodBeamer,"\\usetheme{progressbar}\n \n \n");
+    strcat(CodBeamer,"\\usecolortheme{crane}\n \n \n");
+    //strcat(CodBeamer,"\\usepackage{tgheros}\n \n \n");
+    strcat(CodBeamer,"\\setbeamercolor{frametitle}{fg=brown}\n \n \n");
     strcat(CodBeamer,"\\title{Analizador L\\'exico}\n");
     strcat(CodBeamer,"\\subtitle{Proyecto 1}\n");
     strcat(CodBeamer,"\\author{Ariana Berm\\'udez,Ximena Bola\\~nos, Dylan Rodr\\'iguez}\n");
     strcat(CodBeamer,"\\institute{Instituto Tecnol\\'ogico de Costa Rica}\n");
     strcat(CodBeamer,"\\date{\\today}\n");
     strcat(CodBeamer,"\\begin{document}\n");
+    strcat(CodBeamer,"\\setbeamercolor{frametitle}{fg=brown}\n \n \n");
     strcat(CodBeamer, "\\begin{frame}\n \\titlepage \n \\end{frame}");
     addExplanation(); 
     strcat(CodBeamer,"\\begin{frame}\n");
@@ -102,17 +126,28 @@ void addExplanation(){
     strcat(CodBeamer,"\\begin{frame}\n\\frametitle{FLEX - continuaci\\'on} \n");
     strcat(CodBeamer, "\\textbf{Acciones} \\newline \n"); 
     strcat(CodBeamer, "Todo patr\\'on tiene una acci\\'on asociada. Existen varias acciones, por ejemplo: si se pone \\newline \n"); 
-    strcat(CodBeamer, "\\begin{table}[]\n\\centering\n\\caption{Acciones}\n\\label{Acciones}\n\\begin{tabular}{|l|l|}\n \\hline \n"); 
-    strcat(CodBeamer, "\\\%\\\% \"texto\" & Har\\'a que se borren todas sus aparciones en la entrada. \\\\ \\hline \n");
-    strcat(CodBeamer, "\\{ & \\begin{tabular}[c]{@{}l@{}}Tomar\\'a todo eso como parte de la acci\\'on hasta \\\\ que encuentre la llave que lo cierra, \\}.\\end{tabular} \\\\ \\hline \n");
-    strcat(CodBeamer, "| & Hace que la acci\\'on actual aplique tambi\\'en para la siguiente. \\\\ \\hline  \n");
-    strcat(CodBeamer, "\\end{tabular} \n\\end{table} \n");  
-    strcat(CodBeamer, "El yylex() es una funci\\'on que procesa tokens desde donde lo dejaron la \\'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\\'on"); 
-    //strcat(CodBeamer, ""); 
+    strcat(CodBeamer, "\\begin{table}[]\n"); 
+    strcat(CodBeamer, "\\centering\n"); 
+    strcat(CodBeamer, "\\caption{Acciones}\n"); 
+    strcat(CodBeamer, "\\label{Acciones}\n"); 
+    strcat(CodBeamer, "\\begin{tabular}{lllll}\n"); 
+    strcat(CodBeamer, "\\cline{1-2}\n"); 
+    strcat(CodBeamer, "\\multicolumn{1}{|l|}{\\%\\% \"texto\"} & \\multicolumn{1}{l|}{\\begin{tabular}[c]{@{}l@{}}Har\\'a que se borren todas sus aparciones\\\\ en la entrada.\\end{tabular}}                                    &  &  &  \\\\ \\cline{1-2}\n"); 
+    strcat(CodBeamer, "\\multicolumn{1}{|l|}{\\{}           & \\multicolumn{1}{l|}{\\begin{tabular}[c]{@{}l@{}}Tomar\\'a todo eso como parte de la acci\\'on hasta \\\\ que encuentre la llave que lo cierra, \\}\\end{tabular}} &  &  &  \\\\ \\cline{1-2}\n"); 
+    strcat(CodBeamer, "\\multicolumn{1}{|l|}{-}            & \\multicolumn{1}{l|}{\\begin{tabular}[c]{@{}l@{}}Hace que la acci\\'on actual aplique tambi\\'en\\\\ para la siguiente.\\end{tabular}}                            &  &  &  \\\\ \\cline{1-2}\n"); 
+    strcat(CodBeamer, "&                                                                                                                                                            &  &  & \n"); 
+    strcat(CodBeamer, "\\end{tabular}\n"); 
+    strcat(CodBeamer, "\\end{table}\n"); 
+    strcat(CodBeamer, "\n"); 
+    strcat(CodBeamer, "\n"); 
+
+    
+    strcat(CodBeamer, ""); 
     strcat(CodBeamer, "\\end{frame}\n"); 
 
         strcat(CodBeamer,"\\begin{frame}\n\\frametitle{FLEX - continuaci\\'on} \n");
     strcat(CodBeamer, "\\textbf{Acciones} \\newline \n"); 
+    strcat(CodBeamer, "El yylex() es una funci\\'on que procesa tokens desde donde lo dejaron la \\'ultima vez. Directivas especiales que se pueden incluir dentro de una acci\\'on \\newline \n"); 
     strcat(CodBeamer,"Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \\%array y as\\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\\\");
     strcat(CodBeamer,"Directivas especiales:\\begin{itemize} \\item ECHO: copia yytext a la salida del esc\\'aner  \\item BEGIN: pone al esc\\'aner en la codici\\'on de arranque correspondiente. \\item REJECT: ordena a proceder con al \"segunda mejor regla.\" \\item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\\end{itemize}");
 	
@@ -186,6 +221,7 @@ void generateHistogram(){
     strcat(CodBeamer, max);
     strcat(CodBeamer, ", ymin=0, minor y tick num = 3]\n"); 
     strcat(CodBeamer, "\\addplot coordinates { "); 
+
     for(int i = 1; i < 8 ; i++){
         strcat(CodBeamer, "("); 
         char strI[15];
@@ -208,27 +244,50 @@ void generatePieChart(){
     strcat(CodBeamer,"\\begin{frame}\n");
     strcat(CodBeamer,"\\frametitle{Histograma tipo Pastel}\n");
     strcat(CodBeamer, "\\def\\angle{0}\n");
-    strcat(CodBeamer, "\\def\\radius{3}\n"); 
-    strcat(CodBeamer, "\\def\\cyclelist{{\"yellow\",\"blue\",\"red\",\"green\",\"orange\",\"purple\"}}\n");
-    strcat(CodBeamer, "\\newcount\\cyclecount \\cyclecount=-1\n");
-    strcat(CodBeamer, "\\newcount\\ind \\ind=-1\n");
+    strcat(CodBeamer, "\\def\\radius{2}\n"); 
+    strcat(CodBeamer, "\\def\\cyclelist{{\"magenta\",\"red\",\"green\",\"purple\",\"blue\",\"orange\", \"pink\"}}\n");
+    strcat(CodBeamer, "\\newcount\\cyclecount \\cyclecount=1\n");
+    strcat(CodBeamer, "\\newcount\\ind \\ind=3\n");
     strcat(CodBeamer, "\\begin{tikzpicture}[nodes = {font=\\sffamily}]\n");
     strcat(CodBeamer, "\\foreach \\percent/\\name in {\n");
-    for(int i = 1; i < 8 ; i++){
-     char strICantidad[15];
-        char strIPercent[15];
-        int percentage = numtokens[i] * 100 / cantidad; 
-        sprintf(strIPercent, "%d", percentage); 
-        strcat(CodBeamer, strIPercent); 
-        strcat(CodBeamer, "/");
-        identifierTokenType(i); 
-        if (i == 7){
-            strcat(CodBeamer, "\n");
-        }
-        else
-            strcat(CodBeamer, ",\n");
-        
+    // ari: recalcular antes las cosas y luego utilizarlas, recalcular el numero del porcentaje
+    printf("CANTIDADEES\n\n"); 
+    for(int j = 0; j < 8 ; j++){
+        percentTokens[j] = (numtokens[j] * 100);
+        percentTokens[j]= percentTokens[j] / cantidad; 
+        printf("Percent: %d %.2f \n", j,percentTokens[j]);
+        printf("NumTokens: %d %d \n", j,numtokens[j]);
     }
+    float cantidadPercent = percentTokens[1] + percentTokens[2] + percentTokens[3] + percentTokens[4] + percentTokens[5] + percentTokens[6]+ percentTokens[7];
+
+    for(int i = 1; i < 8 ; i++){
+        int percentage = (int)percentTokens[i]; 
+
+        if(percentage != 0){
+            char strICantidad[15];
+            char strIPercent[15];
+            sprintf(strIPercent, "%d", percentage); 
+            strcat(CodBeamer, strIPercent); 
+            strcat(CodBeamer, "."); 
+
+            float x = percentage - (int) percentage;
+            x = x *100; 
+            int decimalPercentage = (int)x; 
+            char strIDecimalPercent[15];
+            sprintf(strIDecimalPercent, "%d", decimalPercentage); 
+            strcat(CodBeamer, strIDecimalPercent); 
+
+            strcat(CodBeamer, "/");
+            identifierTokenType(i); 
+        }
+        if (i == 7)
+            strcat(CodBeamer, "\n");
+        else if (percentage == 0)
+            strcat(CodBeamer," "); 
+        else
+            strcat(CodBeamer, ",\n"); 
+    }
+
     strcat(CodBeamer, " } {\n"); 
     strcat(CodBeamer, "\\ifx\\percent\\empty\\else\n"); 
     strcat(CodBeamer, "\\global\\advance\\cyclecount by 1\n"); 
