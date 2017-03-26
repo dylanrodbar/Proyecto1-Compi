@@ -1,7 +1,8 @@
-#define hola 10
-#define holi 3
+#define hola 10 + 3
+#define adios 5 + hola
+#define hi   30 - adios
 hola
-holi
+hi
 
 bool holaa()
 {
