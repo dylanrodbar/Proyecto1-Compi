@@ -73,6 +73,7 @@ int nextToken(void)
 
 void inicializarBeamer(void){
     beamer=fopen("main.tex", "w");
+    memset(&CodBeamer[0], 0, sizeof(CodBeamer));
     strcat(CodBeamer,"\\documentclass{beamer}\n");
     strcat(CodBeamer, "\\usepackage{pgfplots}\n"); 
     strcat(CodBeamer,"\\usetheme{progressbar}\n \n \n");
