@@ -59,7 +59,7 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{C\'odigo Analizado}
 \textcolor{green}{holaa} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{green}{hola} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
  \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Hello, its me"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
@@ -70,14 +70,14 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
  \end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{magenta}{int} \textcolor{green}{numero} \textcolor{blue}{=} \textcolor{red}{5} \textcolor{orange}{;} \\ 
+\textcolor{pink}{""} \colorbox{red}{"}\textcolor{magenta}{int} \textcolor{green}{numero} \textcolor{blue}{=} \textcolor{red}{5} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{int} \textcolor{green}{h} \textcolor{blue}{=} \textcolor{red}{20} \textcolor{blue}{+} \textcolor{red}{30} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
  \textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=47, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 5) (3 , 10) (4 , 0) (5 , 5) (6 , 19) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=50, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 6) (2 , 7) (3 , 9) (4 , 0) (5 , 6) (6 , 19) (7 , 3)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -91,11 +91,11 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
 12.0/KEYWORD,
-10.0/INTEGER,
-21.0/IDENTIFIER,
- 10.0/OPERATOR,
-40.0/PUNTUACTOR,
-4.0/LITERAL
+14.0/INTEGER,
+18.0/IDENTIFIER,
+ 12.0/OPERATOR,
+38.0/PUNTUACTOR,
+6.0/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1

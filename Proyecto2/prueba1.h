@@ -4,7 +4,7 @@
 
 bool holaa()
 {
-    int a = hola;
+    int a = hola ;
     printf("Hello, its me");
     return true;
 }

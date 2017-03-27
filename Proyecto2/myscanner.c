@@ -39,7 +39,7 @@ FILE *leerArchivo(char NombreArchivo[]){
     //printf("Ruta del archivo: \n");
     //char NombreArchivo[150];
     //scanf("%s",&NombreArchivo); 
-    printf("%s",NombreArchivo);
+    //printf("%s",NombreArchivo);
     FILE *file;    //Es el archivo de entrada del preprocesador
     file = fopen(NombreArchivo, "r");
     return file;
@@ -364,25 +364,6 @@ int existeDefine(char define[25])
 }
 
 
-
-/*Función encargada de retornar el valor de un define específico tomado de la tabla de definiciones*/
-/*
-char *valorDefine(char *palabra)
-{
-    int ex = existeDefine(palabra);
-    if(ex == -1)
-    {
-        return palabra;
-    }
-
-    else
-    { 
-        return valorDefine(defines[ex].vDefine);
-    }
-    
-}
-*/
-
 bool esNumero(char *valor){
     int i = 0;
     while(valor[i]!= '\0'){
@@ -418,16 +399,12 @@ bool esError(char *valor){
 /*Función encargada de devolver el valor correspondiente a la palabra de entrada en el índice*/
 char *valorTablaDefine(int indice)
 {
-    //esNumero(palabra);
     return defines[indice].vDefine; /*Se retorna el valor correspondiente a palabra, el cual está en la posición indice
                                                    del array defines*/
 }
 
 /*Función encargada de retornar la operación total dentro de un define*/
 char *descomponerHileraDefine(char *valorDefine){
-    printf("Entrada \n");
-    printf("%s\n", valorDefine);
-    printf("*********************************** \n");
     int i = 0;
     int a = 0;
     char temporal[30] = "";
@@ -443,16 +420,7 @@ char *descomponerHileraDefine(char *valorDefine){
             a++;
         }
         
-        /*
-        while(!isspace(valorDefine[i])){
-            temporal[i] = valoreDefine[i];
-            i++;
-        }
-        */
         else{
-            printf("VALOR \n");
-            printf("%s\n", temporal);
-            printf("*********************************** \n");
                 
 
             /*Si se encuentra un número o un operador, solo se concatena*/
@@ -470,7 +438,6 @@ char *descomponerHileraDefine(char *valorDefine){
                 int existe = existeDefine(temporal);
                 if(existe != -1){
                     char *n;
-                    //n = valorTablaDefine(existe); 
                     n = descomponerHileraDefine(defines[existe].vDefine);
                     strcat(resultado, n);
                     strcat(resultado, " ");
@@ -491,34 +458,7 @@ char *descomponerHileraDefine(char *valorDefine){
 
 
     }
-    //printf("VALOR \n");
-    //printf("%s\n", temporal);
-    //printf("*********************************** \n");
-            
-    /*Si se encuentra un número o un operador, solo se concatena*/
-    //if (esNumero(temporal) || esOperador(temporal)){
-    //    strcat(resultado, temporal);
-
-    //}
-
-    /*En caso contrario, lo concateno con el valor en la tabla*/
-    //else{
-    //    int existe = existeDefine(temporal);
-    //    if(existe != -1){
-    //        printf("ENTRAlsdijashoahdoiasdAAAAAAAAAAAAAAAAAAAaa\n");
-    //        char *n;
-            //n = valorTablaDefine(existe);
-    //        n = descomponerHileraDefine(defines[existe].vDefine);
-    //        printf("%s\n", n);
-    //        strcat(resultado, n);
-    //    }
-    //    else{
-    //        strcat(resultado, "ERROR");
-    //    }
-    //}
-    printf("Resultado \n");
-    printf("%s\n", resultado);
-    printf("****************** \n");
+    
     return resultado;
 
     
@@ -610,15 +550,6 @@ void preprocess(FILE *file)
                 in_char = getc(file);
                 /*Se busca el valor asignado al identificador del define*/
                  
-		        /*
-                while (!isspace(in_char))
-                {
-                    vDefine[a] = in_char;
-                    a++;
-                    in_char = getc(file);
-                  
-                }
-                */
 
                 while(in_char != '\n'){
                     
@@ -627,8 +558,7 @@ void preprocess(FILE *file)
                     in_char = getc(file);    
                 }
                 
-                //printf("%s\n", vDefine);
-
+                
 
                 numDefines++;
                  
@@ -642,8 +572,6 @@ void preprocess(FILE *file)
                     strcpy(defines[numDefines].palabra, palabra);
                     strcpy(defines[numDefines].vDefine, vDefine);
                      
-                    //printf("%s\n", defines[0].palabra);
-                    //printf("%s\n", defines[0].vDefine);
                      
                 }
                  
@@ -712,8 +640,6 @@ void preprocess(FILE *file)
                     
                     else{
 
-                        printf("HILERA\n");
-                        printf("%s\n", hilera);
                         /*Si uno de los componentes es ERROR*/
                         if(esError(hilera)){
                             printf("Se ha encontrado un error");
@@ -727,8 +653,6 @@ void preprocess(FILE *file)
                     contP++;
                 }
 
-                printf("HILERA\n");
-                printf("%s\n", hilera);
                 
                 if(esError(hilera)){
                     printf("Se ha encontrado un error");
@@ -765,6 +689,12 @@ void yyerror(char *texto,char *simbolo, int linea){
 
 };
 
+void imprimirArchivoEntrada(FILE *temporal){
+    int in_char;
+    while ((in_char = getc(temporal)) != EOF){
+        putchar(in_char);
+    } 
+}
 
 int main(int argc, char *argv[])
 {
@@ -772,10 +702,15 @@ int main(int argc, char *argv[])
     FILE *f = leerArchivo(argv[1]);
     if(seLeyoArchivo(f))
     {
-        printf("Se pudo leer el archivo correctamente");
+        printf("Se pudo leer el archivo correctamente\n");
         tmpFile = fopen("config.c", "wt");
         preprocess(f);
         fclose(tmpFile);
+        FILE *temporal = fopen("config.c", "r");
+        imprimirArchivoEntrada(temporal);
+        fclose(temporal);
+
+
     }
     else
     {

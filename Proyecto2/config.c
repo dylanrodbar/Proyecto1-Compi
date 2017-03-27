@@ -1,7 +1,7 @@
 
 bool holaa()
 {
-    int a = hola;
+    int a = 10 + 3  ;
     printf("Hello, its me");
     return true;
 }
@@ -12,8 +12,7 @@ int funcion()
    return 0;
 }
 
-
-
+"""
 
 int numero = 5;
 int h = 20  + 30  + 3  ;

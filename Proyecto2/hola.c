@@ -6,7 +6,6 @@
 
 
 
-
 int numero = 5;
 int h = b ;
 
