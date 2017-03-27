@@ -9,7 +9,8 @@
 extern int yylex();
 extern int yylineno;
 extern char* yytext;
-
+int linea=1;
+bool changeline=false;
 char *includes[] = {};
 
 struct defineS defines[]; 
@@ -34,12 +35,13 @@ char *CodBeamer[5000000];
 
 
 
-FILE *leerArchivo(void){
+FILE *leerArchivo(char NombreArchivo[]){
     //printf("Ruta del archivo: \n");
     //char NombreArchivo[150];
-    //gets(NombreArchivo);
+    //scanf("%s",&NombreArchivo); 
+    printf("%s",NombreArchivo);
     FILE *file;    //Es el archivo de entrada del preprocesador
-    file = fopen("hola.c", "r");
+    file = fopen(NombreArchivo, "r");
     return file;
 } 
 
@@ -83,7 +85,6 @@ void inicializarBeamer(void){
     strcat(CodBeamer,"\\institute{Instituto Tecnol\\'ogico de Costa Rica}\n");
     strcat(CodBeamer,"\\date{\\today}\n");
     strcat(CodBeamer,"\\begin{document}\n");
-    strcat(CodBeamer,"\\setbeamercolor{frametitle}{fg=brown}\n \n \n");
     strcat(CodBeamer, "\\begin{frame}\n \\titlepage \n \\end{frame}");
     addExplanation(); 
     strcat(CodBeamer,"\\begin{frame}\n");
@@ -163,23 +164,26 @@ int scanner(void)
     ntoken = nextToken();
     
     while(ntoken) {
-    
+    	changeline=false;
         printf("%d\n", ntoken);
         numtokens[ntoken]++;
         ntoken = nextToken();
-    strcat(CodBeamer,"\\textcolor{");
-    strcat(CodBeamer,color[ntoken]);
-    strcat(CodBeamer,"}{");
-    CheckToken(yytext);
+    	strcat(CodBeamer,"\\textcolor{");
+    	strcat(CodBeamer,color[ntoken]);
+   	strcat(CodBeamer,"}{");
+    	CheckToken(yytext);
         strcat(CodBeamer,"} ");
-    
-    if(strcmp(yytext, ";") == 0 || strcmp(yytext, "{") == 0 || strcmp(yytext, "}") == 0){
-          strcat(CodBeamer,"\\\\ \n ");
-        }
-    if(yylineno%10==0){
-      strcat(CodBeamer,"\\end{frame}\n");
-      strcat(CodBeamer,"\\begin{frame}\n"); 
-    }
+	    if(strcmp(yytext, ";") == 0 || strcmp(yytext, "{") == 0 || strcmp(yytext, "}") == 0){
+		  strcat(CodBeamer,"\\\\ \n ");
+		  linea++;
+		  changeline=true;
+		}
+	    printf("Numero de linea %d\n",linea);
+	    if(linea%10==0 && linea!=1 && changeline==true){
+	      strcat(CodBeamer,"\\end{frame}\n");
+	      strcat(CodBeamer,"\\begin{frame}\n");
+	      strcat(CodBeamer,"\\frametitle{C\\'odigo Analizado}\n");  
+	    }
     }
     
     generateHistogram(); 
@@ -761,10 +765,10 @@ void yyerror(char *texto,char *simbolo, int linea){
 };
 
 
-int main(void)
+int main(int argc, char *argv[])
 {
     
-    FILE *f = leerArchivo();
+    FILE *f = leerArchivo(argv[1]);
     if(seLeyoArchivo(f))
     {
         printf("Se pudo leer el archivo correctamente");
@@ -775,14 +779,14 @@ int main(void)
     else
     {
         printf("No se pudo leer el archivo correctamente");
-    }  
+    } 
     
 
 
 
     scanner();
     
-    //system("pdflatex main.tex");
+ 
     return 0; 
 }
 

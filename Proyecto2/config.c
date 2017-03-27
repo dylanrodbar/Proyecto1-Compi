@@ -1,12 +1,3 @@
-10 + 3 
-30 - 5 + 10 + 3   
-
-bool holaa()
-{
-    int a = hola;
-    printf("Hello, its me");
-    return true;
-}
 
 int funcion()
 {

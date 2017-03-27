@@ -1,4 +1,4 @@
-+ hola \documentclass{beamer}
++ c + 3 \documentclass{beamer}
 \usepackage{pgfplots}
 \usetheme{progressbar}
  
@@ -15,9 +15,6 @@
 \institute{Instituto Tecnol\'ogico de Costa Rica}
 \date{\today}
 \begin{document}
-\setbeamercolor{frametitle}{fg=brown}
- 
- 
 \begin{frame}
  \titlepage 
  \end{frame}\begin{frame}
@@ -61,12 +58,7 @@ El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultim
 Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \%array y as\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\Directivas especiales:\begin{itemize} \item ECHO: copia yytext a la salida del esc\'aner  \item BEGIN: pone al esc\'aner en la codici\'on de arranque correspondiente. \item REJECT: ordena a proceder con al "segunda mejor regla." \item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\end{itemize}\end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{blue}{+} \textcolor{red}{3} \textcolor{red}{30} \textcolor{blue}{-} \textcolor{red}{5} \textcolor{blue}{+} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{green}{bool} \textcolor{green}{holaa} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{green}{hola} \textcolor{orange}{;} \\ 
- \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Hello, its me"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
- \textcolor{orange}{\}} \\ 
- \textcolor{magenta}{int} \textcolor{green}{funcion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+\textcolor{green}{funcion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
  \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una función"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{red}{0} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
@@ -76,8 +68,8 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=57, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 11) (3 , 10) (4 , 0) (5 , 9) (6 , 19) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=28, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 4) (2 , 5) (3 , 4) (4 , 0) (5 , 4) (6 , 10) (7 , 1)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -90,11 +82,11 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-10.0/KEYWORD,
-19.0/INTEGER,
-17.0/IDENTIFIER,
- 15.0/OPERATOR,
-33.0/PUNTUACTOR,
+14.0/KEYWORD,
+17.0/INTEGER,
+14.0/IDENTIFIER,
+ 14.0/OPERATOR,
+35.0/PUNTUACTOR,
 3.0/LITERAL
  } {
 \ifx\percent\empty\else
