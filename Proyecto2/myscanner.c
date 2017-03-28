@@ -36,10 +36,6 @@ char *CodBeamer[5000000];
 
 
 FILE *leerArchivo(char NombreArchivo[]){
-    //printf("Ruta del archivo: \n");
-    //char NombreArchivo[150];
-    //scanf("%s",&NombreArchivo); 
-    //printf("%s",NombreArchivo);
     FILE *file;    //Es el archivo de entrada del preprocesador
     file = fopen(NombreArchivo, "r");
     return file;
@@ -78,7 +74,6 @@ void inicializarBeamer(void){
     strcat(CodBeamer, "\\usepackage{pgfplots}\n"); 
     strcat(CodBeamer,"\\usetheme{progressbar}\n \n \n");
     strcat(CodBeamer,"\\usecolortheme{crane}\n \n \n");
-    //strcat(CodBeamer,"\\usepackage{tgheros}\n \n \n");
     strcat(CodBeamer,"\\setbeamercolor{frametitle}{fg=brown}\n \n \n");
     strcat(CodBeamer,"\\title{Analizador L\\'exico}\n");
     strcat(CodBeamer,"\\subtitle{Proyecto 1}\n");
@@ -145,17 +140,35 @@ void finalizarBeamer(void){
     fclose(beamer);
 }
 void CheckToken(char *text){
-    if(strcmp(yytext, "{")==0)
-      strcat(CodBeamer,"\\{");
+    if(strcmp(yytext, "{")==0 || strcmp(yytext, "&")==0 || strcmp(yytext, "}")==0|| strcmp(yytext, "%")==0){
+      strcat(CodBeamer,"\\");
+      strcat(CodBeamer,yytext);	
+}
+    else if(strcmp(yytext, "~")==0){
+	strcat(CodBeamer,"\\sim");
+	}
+    else if(strcmp(yytext, "^")==0){
+	strcat(CodBeamer,"\\Lambda");
+	}
+    else if(strcmp(yytext, "^=")==0){
+	strcat(CodBeamer,"\\Lambda =");
+	}
+    else if(strcmp(yytext, "%=")==0){
+	strcat(CodBeamer,"\% =");
+	}
+    else if(strcmp(yytext, "&&")==0){
+	strcat(CodBeamer,"\\&\\&");
+	}
+    else if(strcmp(yytext, "&=")==0){
+	strcat(CodBeamer,"\\& =");
+	}
+  
+    else if(strcmp(yytext, "||")==0){
+	strcat(CodBeamer,"\\|");
+	}
     else{
-    if(strcmp(yytext, "}")==0)
-          strcat(CodBeamer,"\\}");
-    else{
-          strcat(CodBeamer,yytext);
-         }
-
-        
-        }
+        strcat(CodBeamer,yytext);
+     }
     
 }
 int scanner(void)
@@ -173,6 +186,7 @@ int scanner(void)
     	strcat(CodBeamer,color[ntoken]);
    	strcat(CodBeamer,"}{");
     	CheckToken(yytext);
+	printf("%s",yytext);
         strcat(CodBeamer,"} ");
 	    if(strcmp(yytext, ";") == 0 || strcmp(yytext, "{") == 0 || strcmp(yytext, "}") == 0){
 		  strcat(CodBeamer,"\\\\ \n ");
@@ -684,6 +698,9 @@ void preprocess(FILE *file)
 void yyerror(char *texto,char *simbolo, int linea){
      printf(texto,simbolo,linea);
      strcat(CodBeamer,"\\colorbox{red}{");
+     if(strcmp(yytext, "$")==0 || strcmp(yytext, "#")==0){
+       strcat(CodBeamer, "\\");
+       }
      strcat(CodBeamer, simbolo);
      strcat(CodBeamer,"}");
 
@@ -695,11 +712,7 @@ void imprimirArchivoEntrada(FILE *temporal){
         putchar(in_char);
     } 
 }
-
-int main(int argc, char *argv[])
-{
-    
-    FILE *f = leerArchivo(argv[1]);
+void openfilepreprocess(FILE *f){
     if(seLeyoArchivo(f))
     {
         printf("Se pudo leer el archivo correctamente\n");
@@ -718,10 +731,20 @@ int main(int argc, char *argv[])
     } 
     
 
+}
+void limpiarDocumento(char *f){
+	fclose(fopen(f, "w"));
+}
 
-
-    scanner();
+int main(int argc, char *argv[])
+{
     
+    FILE *f = leerArchivo(argv[1]);
+    openfilepreprocess(f);
+    scanner();
+    limpiarDocumento("config.c");
+    system("pdflatex main.tex");
+    system("evince --presentation main.pdf");
  
     return 0; 
 }

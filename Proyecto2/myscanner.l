@@ -47,10 +47,14 @@ void yyerror(char *,char *, int);
 ","                       return PUNTUACTOR;
 "("                       return PUNTUACTOR;
 ")"                       return PUNTUACTOR;
+"]"                       return PUNTUACTOR;
+"["                       return PUNTUACTOR;
 ";"                       return PUNTUACTOR;
 ":"                       return PUNTUACTOR;
 
-
+"~"                       return OPERATOR;
+"?"                       return OPERATOR;
+"^"                       return OPERATOR;
 "+"			  return OPERATOR;	
 "-"			  return OPERATOR;
 "/"			  return OPERATOR;
@@ -71,6 +75,8 @@ void yyerror(char *,char *, int);
 "%="			  return OPERATOR;
 "!="			  return OPERATOR;
 "."			  return OPERATOR;
+"&"			  return OPERATOR;	
+"|"			  return OPERATOR;
 "->"			  return OPERATOR;
 "&&"			  return OPERATOR;
 "||"			  return OPERATOR;	
@@ -91,6 +97,7 @@ void yyerror(char *,char *, int);
 
 [a-zA-Z][_a-zA-Z0-9]*	  return IDENTIFIER;
 L?\"(\\.|[^\\"])*\"       return LITERAL;
+L?\'(\\.|[^\\"])*\'       return LITERAL;
 [0-9][0-9]*		  return INTEGER;
 
 
@@ -105,5 +112,6 @@ int yywrap(void)
 {
     return 1;
 }
+
 
 
