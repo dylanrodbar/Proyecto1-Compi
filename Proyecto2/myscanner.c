@@ -243,7 +243,7 @@ void generatePieChart(){
     strcat(CodBeamer,"\\begin{frame}\n");
     strcat(CodBeamer,"\\frametitle{Histograma tipo Pastel}\n");
     strcat(CodBeamer, "\\def\\angle{0}\n");
-    strcat(CodBeamer, "\\def\\radius{2}\n"); 
+    strcat(CodBeamer, "\\def\\radius{2.5}\n"); 
     strcat(CodBeamer, "\\def\\cyclelist{{\"magenta\",\"red\",\"green\",\"purple\",\"blue\",\"orange\", \"pink\"}}\n");
     strcat(CodBeamer, "\\newcount\\cyclecount \\cyclecount=1\n");
     strcat(CodBeamer, "\\newcount\\ind \\ind=3\n");
@@ -259,23 +259,13 @@ void generatePieChart(){
     }
     float cantidadPercent = percentTokens[1] + percentTokens[2] + percentTokens[3] + percentTokens[4] + percentTokens[5] + percentTokens[6]+ percentTokens[7];
 
+
     for(int i = 1; i < 8 ; i++){
         int percentage = (int)percentTokens[i]; 
-
         if(percentage != 0){
-            char strICantidad[15];
             char strIPercent[15];
-            sprintf(strIPercent, "%d", percentage); 
+            sprintf(strIPercent, "%.2f", percentTokens[i]);
             strcat(CodBeamer, strIPercent); 
-            strcat(CodBeamer, "."); 
-
-            float x = percentage - (int) percentage;
-            x = x *100; 
-            int decimalPercentage = (int)x; 
-            char strIDecimalPercent[15];
-            sprintf(strIDecimalPercent, "%d", decimalPercentage); 
-            strcat(CodBeamer, strIDecimalPercent); 
-
             strcat(CodBeamer, "/");
             identifierTokenType(i); 
         }
@@ -638,6 +628,8 @@ void preprocess(FILE *file)
                 int contP = 0;
                 int contHilera = 0;
                 char hilera[300] = "";
+
+
                 //putchar(p[contHilera]);
 
                 /*Tomamos el valor que se rescata de los define y se va descomponiendo*/
@@ -645,10 +637,11 @@ void preprocess(FILE *file)
                     
                     /*Se descompone por espacios*/
                     if(!isspace(p[contP])){
-                        //strcpy(hilera, "ERROR");
+
+                
                         hilera[contHilera] = p[contP];
                         contHilera++;
-                        
+                        printf("")
                          
                     }
                     
