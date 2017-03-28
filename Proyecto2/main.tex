@@ -58,44 +58,44 @@ El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultim
 Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \%array y as\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\Directivas especiales:\begin{itemize} \item ECHO: copia yytext a la salida del esc\'aner  \item BEGIN: pone al esc\'aner en la codici\'on de arranque correspondiente. \item REJECT: ordena a proceder con al "segunda mejor regla." \item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\end{itemize}\end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{red}{50} \textcolor{green}{bool} \textcolor{green}{hola} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{green}{hola} \textcolor{orange}{;} \\ 
+\textcolor{green}{holaa} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
  \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Hello, its me"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
  \textcolor{magenta}{int} \textcolor{green}{funcion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una funcion"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
+ \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una función"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{red}{0} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
  \end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{magenta}{int} \textcolor{green}{numero} \textcolor{blue}{=} \textcolor{red}{5} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{int} \textcolor{green}{h} \textcolor{blue}{=} \textcolor{red}{20} \textcolor{orange}{;} \\ 
+\textcolor{magenta}{int} \textcolor{green}{numero} \textcolor{blue}{=} \textcolor{red}{10} \colorbox{red}{\#}\textcolor{red}{5} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{h} \textcolor{blue}{=} \textcolor{red}{20} \textcolor{blue}{+} \textcolor{red}{30} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
  \textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=45, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 5) (3 , 10) (4 , 0) (5 , 3) (6 , 19) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=50, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 6) (2 , 8) (3 , 9) (4 , 0) (5 , 6) (6 , 19) (7 , 2)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
 \begin{frame}
 \frametitle{Histograma tipo Pastel}
 \def\angle{0}
-\def\radius{2}
+\def\radius{2.5}
 \def\cyclelist{{"magenta","red","green","purple","blue","orange", "pink"}}
 \newcount\cyclecount \cyclecount=1
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-13.33/KEYWORD,
-11.11/INTEGER,
-22.22/IDENTIFIER,
- 6.67/OPERATOR,
-42.22/PUNTUACTOR,
-4.44/LITERAL
+12.00/KEYWORD,
+16.00/INTEGER,
+18.00/IDENTIFIER,
+ 12.00/OPERATOR,
+38.00/PUNTUACTOR,
+4.00/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1

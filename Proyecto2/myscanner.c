@@ -258,24 +258,23 @@ void generatePieChart(){
         printf("NumTokens: %d %d \n", j,numtokens[j]);
     }
     float cantidadPercent = percentTokens[1] + percentTokens[2] + percentTokens[3] + percentTokens[4] + percentTokens[5] + percentTokens[6]+ percentTokens[7];
-
-
-    for(int i = 1; i < 8 ; i++){
-        int percentage = (int)percentTokens[i]; 
-        if(percentage != 0){
-            char strIPercent[15];
-            sprintf(strIPercent, "%.2f", percentTokens[i]);
-            strcat(CodBeamer, strIPercent); 
-            strcat(CodBeamer, "/");
-            identifierTokenType(i); 
-        }
-        if (i == 7)
-            strcat(CodBeamer, "\n");
-        else if (percentage == 0)
-            strcat(CodBeamer," "); 
-        else
-            strcat(CodBeamer, ",\n"); 
-    }
+    
+	for(int i = 1; i < 8 ; i++){
+	int percentage = (int)percentTokens[i];
+	if(percentage != 0){
+	char strIPercent[15];
+	sprintf(strIPercent, "%.2f", percentTokens[i]);
+	strcat(CodBeamer, strIPercent);
+	strcat(CodBeamer, "/");
+	identifierTokenType(i);
+	}
+	if (i == 7)
+	strcat(CodBeamer, "\n");
+	else if (percentage == 0)
+	strcat(CodBeamer," ");
+	else
+	strcat(CodBeamer, ",\n");
+	}
 
     strcat(CodBeamer, " } {\n"); 
     strcat(CodBeamer, "\\ifx\\percent\\empty\\else\n"); 
@@ -628,8 +627,6 @@ void preprocess(FILE *file)
                 int contP = 0;
                 int contHilera = 0;
                 char hilera[300] = "";
-
-
                 //putchar(p[contHilera]);
 
                 /*Tomamos el valor que se rescata de los define y se va descomponiendo*/
@@ -637,11 +634,10 @@ void preprocess(FILE *file)
                     
                     /*Se descompone por espacios*/
                     if(!isspace(p[contP])){
-
-                
+                        //strcpy(hilera, "ERROR");
                         hilera[contHilera] = p[contP];
                         contHilera++;
-                        printf("")
+                        
                          
                     }
                     
