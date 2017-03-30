@@ -12,10 +12,9 @@ extern char* yytext;
 int linea=1;
 bool changeline=false;
 char *includes[] = {};
-
 struct defineS defines[]; 
 int numIncludes = -1; //contador de los includes que se tendrán en el array de chars includes
-
+bool error  =false;
 int numDefines = -1;  //contador de los defines que se tendrán en el array de structs defines
 FILE *tmpFile;
 
@@ -467,16 +466,19 @@ char *descomponerHileraDefine(char *valorDefine){
     
 }
 
+void activarError(){
+    error = true;
+}
 
 /*Función encargada de buscar los #include o #define y manejarlos*/
-void preprocess(FILE *file)
+void preprocess(FILE *file, char *nombreArchivo)
 {
+    int contador = 0;
     int in_char;
-    bool salirCiclo = false;
- 
+    int numeroLinea = 1;
     char palabra[25] = "";
     char vDefine[300] = ""; /*Es el valor que va después del define, ejemplo: #define h 5 + 4 + 3, vDefine toma el 5 + 4 + 3*/
-    char tipo[7] = "";
+    char tipo[8] = "";
     
     
     int j = 0; //contador para tipo
@@ -486,7 +488,6 @@ void preprocess(FILE *file)
     while ((in_char = getc(file)) != EOF)
     {
 
-        if(salirCiclo) break;
 
         /*Se encuentra un #, por lo que seguidamente se tomará el valor siguiente para luego evaluar si es include o define*/
         if (in_char == '#')
@@ -525,11 +526,15 @@ void preprocess(FILE *file)
                 
                     
 		            /*Se evalúa si ya existe el include en la tabla de includes
-                Si ya existe, se notificará*/
-		            if(existeInclude(palabra))
+                    Si ya existe, se notificará*/
+		            
+                    if(existeInclude(palabra))
 		            {
-		                printf("Inclusión duplicada de librería %s", palabra);
-		            }
+                        error = true;
+                        
+		                printf("Inclusión duplicada de librería %s, en línea %i, en el archivo %s\n", palabra, numeroLinea, nombreArchivo);
+		                              
+                    }
 
 
 		            /*En caso contrario, se seguirán leyendo librerías*/
@@ -541,10 +546,12 @@ void preprocess(FILE *file)
                         includes[numIncludes] = (char *)malloc(sizeof(char));                
                         strcpy(includes[numIncludes], palabra);
 		                FILE *n = fopen(palabra, "r");
-		                preprocess(n);
+		                preprocess(n, palabra);
 		            }
             
             }
+
+
             
             /*Se encuentra un define*/
             else if(strcmp(tipo, "define") == 0)
@@ -587,6 +594,8 @@ void preprocess(FILE *file)
                                    
 
             }
+
+            numeroLinea++;
             
             
         } 
@@ -645,7 +654,9 @@ void preprocess(FILE *file)
 
                         /*Si uno de los componentes es ERROR*/
                         if(esError(hilera)){
-                            printf("Se ha encontrado un error");
+                            error = true;
+                            printf("Se ha encontrado un error al intentar sustituir '%s' en línea: %i, en el archivo %s\n", defines[existe].palabra, numeroLinea, nombreArchivo);
+                            
                         }
                         contHilera=0;
                         memset(&hilera[0], 0, sizeof(hilera));
@@ -658,12 +669,15 @@ void preprocess(FILE *file)
 
                 
                 if(esError(hilera)){
-                    printf("Se ha encontrado un error");
+                    error = true;
+                    printf("Se ha encontrado un error al intentar sustituir '%s' en línea: %i, en el archivo %s\n", defines[existe].palabra, numeroLinea, nombreArchivo);
+                    
                 }
                 
 
                 fputs(p, tmpFile); /*Se copia el valor al archivo temporal*/
             }
+            if(in_char == '\n') numeroLinea++;
             fputc(in_char, tmpFile);
             
              
@@ -701,16 +715,13 @@ void imprimirArchivoEntrada(FILE *temporal){
         putchar(in_char);
     } 
 }
-void openfilepreprocess(FILE *f){
+void openfilepreprocess(FILE *f, char *nombreArchivo){
     if(seLeyoArchivo(f))
     {
         printf("Se pudo leer el archivo correctamente\n");
         tmpFile = fopen("config.c", "wt");
-        preprocess(f);
+        preprocess(f, nombreArchivo);
         fclose(tmpFile);
-        FILE *temporal = fopen("config.c", "r");
-        imprimirArchivoEntrada(temporal);
-        fclose(temporal);
 
 
     }
@@ -725,16 +736,27 @@ void limpiarDocumento(char *f){
 	fclose(fopen(f, "w"));
 }
 
+
+
 int main(int argc, char *argv[])
 {
     
     FILE *f = leerArchivo(argv[1]);
-    openfilepreprocess(f);
-    scanner();
+    openfilepreprocess(f, argv[1]);
+    if (error == false){
+        FILE *temporal = fopen("config.c", "r");
+        imprimirArchivoEntrada(temporal);
+        fclose(temporal);
+        scanner();
+        system("pdflatex main.tex");
+        system("evince --presentation main.pdf");
+    }
+
+
+
     limpiarDocumento("config.c");
-    system("pdflatex main.tex");
-    system("evince --presentation main.pdf");
- 
+
+
     return 0; 
 }
 
