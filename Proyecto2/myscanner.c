@@ -71,6 +71,8 @@ void inicializarBeamer(void){
     memset(&CodBeamer[0], 0, sizeof(CodBeamer));
     strcat(CodBeamer,"\\documentclass{beamer}\n");
     strcat(CodBeamer, "\\usepackage{pgfplots}\n"); 
+    //strcat(CodBeamer, "\\usepackage[light]{antpolt}\n");
+    //strcat(CodBeamer, "\\usepackage[T1]{fontenc}\n");    
     strcat(CodBeamer,"\\usetheme{progressbar}\n \n \n");
     strcat(CodBeamer,"\\usecolortheme{crane}\n \n \n");
     strcat(CodBeamer,"\\setbeamercolor{frametitle}{fg=brown}\n \n \n");
@@ -164,6 +166,35 @@ void CheckToken(char *text){
   
     else if(strcmp(yytext, "||")==0){
 	strcat(CodBeamer,"\\|");
+	}
+    else if(strcmp(yytext, "|")==0|strcmp(yytext, ">")==0|strcmp(yytext, "<")==0){
+	strcat(CodBeamer,"$");
+	strcat(CodBeamer,yytext);	
+	strcat(CodBeamer,"$");
+	}
+    else if(strcmp(yytext, "<=")==0){
+	strcat(CodBeamer,"$<$=");
+	}
+    else if(strcmp(yytext, ">=")==0){
+	strcat(CodBeamer,"$>$=");
+	}
+    else if(strcmp(yytext, "|=")==0){
+	strcat(CodBeamer,"$|$=");
+	}
+    else if(strcmp(yytext, "<<=")==0){
+	strcat(CodBeamer,"$<<$=");
+	}
+    else if(strcmp(yytext, ">>=")==0){
+	strcat(CodBeamer,"$>>$=");
+	}
+    else if(strcmp(yytext, "->")==0){
+	strcat(CodBeamer,"-$>$");
+	}
+    else if(strcmp(yytext, ">>")==0){
+	strcat(CodBeamer,"$>>$");
+	}
+    else if(strcmp(yytext, "<<")==0){
+	strcat(CodBeamer,"$<<$");
 	}
     else{
         strcat(CodBeamer,yytext);

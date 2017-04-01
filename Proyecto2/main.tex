@@ -70,14 +70,16 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
  \end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{magenta}{int} \textcolor{green}{numero} \textcolor{blue}{=} \textcolor{red}{10} \colorbox{red}{\#}\textcolor{red}{5} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{int} \textcolor{green}{h} \textcolor{blue}{=} \textcolor{red}{20} \textcolor{blue}{+} \textcolor{red}{30} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
+\textcolor{magenta}{int} \textcolor{green}{i} \textcolor{blue}{=} \textcolor{red}{0} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{while} \textcolor{orange}{(} \textcolor{green}{i} \textcolor{blue}{$<$=} \textcolor{green}{a} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{green}{i} \textcolor{blue}{++} \textcolor{orange}{;} \\ 
+ \textcolor{orange}{\}} \\ 
  \textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=50, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 8) (3 , 9) (4 , 0) (5 , 6) (6 , 19) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=51, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 6) (2 , 4) (3 , 11) (4 , 0) (5 , 5) (6 , 23) (7 , 2)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -90,12 +92,12 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-12.00/KEYWORD,
-16.00/INTEGER,
-18.00/IDENTIFIER,
- 12.00/OPERATOR,
-38.00/PUNTUACTOR,
-4.00/LITERAL
+11.76/KEYWORD,
+7.84/INTEGER,
+21.57/IDENTIFIER,
+ 9.80/OPERATOR,
+45.10/PUNTUACTOR,
+3.92/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1
