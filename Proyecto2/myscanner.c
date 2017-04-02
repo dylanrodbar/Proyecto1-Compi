@@ -14,7 +14,7 @@ bool changeline=false;
 char *includes[] = {};
 struct defineS defines[]; 
 int numIncludes = -1; //contador de los includes que se tendrán en el array de chars includes
-bool error  =false;
+bool *error  = false;
 int numDefines = -1;  //contador de los defines que se tendrán en el array de structs defines
 FILE *tmpFile;
 
@@ -562,7 +562,6 @@ void preprocess(FILE *file, char *nombreArchivo)
                     if(existeInclude(palabra))
 		            {
                         error = true;
-                        
 		                printf("Inclusión duplicada de librería %s, en línea %i, en el archivo %s\n", palabra, numeroLinea, nombreArchivo);
 		                              
                     }
@@ -645,7 +644,6 @@ void preprocess(FILE *file, char *nombreArchivo)
             
             }
             
-
             
             /*Se evalúa si el nuevo valor existe en la tabla*/
             int existe = existeDefine(palabra); 

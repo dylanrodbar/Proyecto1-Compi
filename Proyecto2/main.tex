@@ -58,28 +58,29 @@ El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultim
 Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \%array y as\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\Directivas especiales:\begin{itemize} \item ECHO: copia yytext a la salida del esc\'aner  \item BEGIN: pone al esc\'aner en la codici\'on de arranque correspondiente. \item REJECT: ordena a proceder con al "segunda mejor regla." \item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\end{itemize}\end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{green}{holaa} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+\textcolor{green}{holaFuncion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
  \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{b} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
  \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Hello, its me"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
  \textcolor{magenta}{int} \textcolor{green}{funcion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
  \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una función"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{red}{0} \textcolor{orange}{;} \\ 
- \textcolor{orange}{\}} \\ 
  \end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{magenta}{int} \textcolor{green}{i} \textcolor{blue}{=} \textcolor{red}{0} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{while} \textcolor{orange}{(} \textcolor{green}{i} \textcolor{blue}{$<$=} \textcolor{green}{a} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{green}{i} \textcolor{blue}{++} \textcolor{orange}{;} \\ 
+\textcolor{orange}{\}} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{funcionPruebaSegunda} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Prueba"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{t} \textcolor{blue}{=} \textcolor{red}{30} \textcolor{blue}{+} \textcolor{red}{40} \textcolor{blue}{+} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{20} \textcolor{blue}{+} \textcolor{red}{40} \textcolor{blue}{+} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{20} \textcolor{blue}{+} \textcolor{red}{6} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{blue}{+} \textcolor{red}{10} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
  \textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=51, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 4) (3 , 11) (4 , 0) (5 , 5) (6 , 23) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=76, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 7) (2 , 15) (3 , 11) (4 , 0) (5 , 14) (6 , 26) (7 , 3)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -92,12 +93,12 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-11.76/KEYWORD,
-7.84/INTEGER,
-21.57/IDENTIFIER,
- 9.80/OPERATOR,
-45.10/PUNTUACTOR,
-3.92/LITERAL
+9.21/KEYWORD,
+19.74/INTEGER,
+14.47/IDENTIFIER,
+ 18.42/OPERATOR,
+34.21/PUNTUACTOR,
+3.95/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1

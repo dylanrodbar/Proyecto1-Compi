@@ -1,10 +1,11 @@
 #define hola 10 + 3
-#define adios 5 + hola
+#define adios 5 + hola + 5
 #define hi   30 - adios
 
-bool holaa()
+bool holaFuncion()
 {
     int a = hola ;
+    int b = hola ;
     printf("Hello, its me");
     return true;
 }
