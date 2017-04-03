@@ -71,11 +71,11 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{C\'odigo Analizado}
 \textcolor{orange}{\}} \\ 
- \textcolor{purple}{//hola } \\ 
+ \textcolor{purple}{//"hola" } \\ 
  \textcolor{purple}{//adios oidhofhofaushoi @@ \#\#} \\ 
  \textcolor{magenta}{int} \textcolor{green}{funcionPruebaSegunda} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Prueba"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
- \textcolor{purple}{/*	int t = c;
+ \textcolor{purple}{/*	printf("Prueba");
+	int t = c;
 	t++;
 */} \\ 
  \textcolor{orange}{\}} \\ 
@@ -83,8 +83,8 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=56, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 5) (3 , 10) (4 , 3) (5 , 4) (6 , 25) (7 , 3)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=51, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 6) (2 , 5) (3 , 9) (4 , 3) (5 , 4) (6 , 22) (7 , 2)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -97,13 +97,13 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-10.71/KEYWORD,
-8.93/INTEGER,
-17.86/IDENTIFIER,
-5.36/CONSTANT,
-7.14/OPERATOR,
-44.64/PUNTUACTOR,
-5.36/LITERAL
+11.76/KEYWORD,
+9.80/INTEGER,
+17.65/IDENTIFIER,
+5.88/CONSTANT,
+7.84/OPERATOR,
+43.14/PUNTUACTOR,
+3.92/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1

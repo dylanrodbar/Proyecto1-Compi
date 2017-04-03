@@ -7,13 +7,12 @@
 #define a 40 + x
 
 
-//hola 
+//"hola" 
 //adios oidhofhofaushoi @@ \#\#
 
 int funcionPruebaSegunda(){
-	printf("Prueba");
-
-/*	int t = c;
+/*	printf("Prueba");
+	int t = c;
 	t++;
 */
 }

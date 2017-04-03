@@ -15,13 +15,12 @@ int funcion()
 }
 
 
-//hola 
+//"hola" 
 //adios oidhofhofaushoi @@ \#\#
 
 int funcionPruebaSegunda(){
-	printf("Prueba");
-
-/*	int t = c;
+/*	printf("Prueba");
+	int t = c;
 	t++;
 */
 }
