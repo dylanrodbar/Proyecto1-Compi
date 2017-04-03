@@ -42,7 +42,7 @@ int linea;
 [0-9][0-9]*		  return INTEGER;
 
 L?"/*"(\\.|[^\\"])*"*/"       		        return CONSTANT;
-"/*"((\*+[^/*])|([^*]))*\**"*/"                		        return CONSTANT;
+"/*"((\*+[^/*])|([^*]))*\**"*/"                	return CONSTANT;
 "/*"$*"*/"                		        return CONSTANT;
 "//".*$                  		        return CONSTANT;
 0[xX][a-fA-F0-9]+(u|U|l|L)*?	     		return CONSTANT; 
