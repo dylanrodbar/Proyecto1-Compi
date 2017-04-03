@@ -9,7 +9,7 @@
 extern int yylex();
 extern int yylineno;
 extern char* yytext;
-int linea=1;
+extern int linea=1;
 bool changeline=false;
 char *includes[] = {};
 struct defineS defines[]; 
@@ -209,21 +209,21 @@ int scanner(void)
     
     while(ntoken) {
     	changeline=false;
-        printf("%d\n", ntoken);
+
         numtokens[ntoken]++;
         ntoken = nextToken();
     	strcat(CodBeamer,"\\textcolor{");
     	strcat(CodBeamer,color[ntoken]);
    	strcat(CodBeamer,"}{");
     	CheckToken(yytext);
-	printf("%s",yytext);
+	
         strcat(CodBeamer,"} ");
-	    if(strcmp(yytext, ";") == 0 || strcmp(yytext, "{") == 0 || strcmp(yytext, "}") == 0){
+	    if(strcmp(yytext, ";") == 0 || strcmp(yytext, "{") == 0 || strcmp(yytext, "}") == 0 || ntoken==4){
 		  strcat(CodBeamer,"\\\\ \n ");
 		  linea++;
 		  changeline=true;
 		}
-	    printf("Numero de linea %d\n",linea);
+
 	    if(linea%10==0 && linea!=1 && changeline==true){
 	      strcat(CodBeamer,"\\end{frame}\n");
 	      strcat(CodBeamer,"\\begin{frame}\n");
@@ -279,13 +279,11 @@ void generatePieChart(){
     strcat(CodBeamer, "\\newcount\\ind \\ind=3\n");
     strcat(CodBeamer, "\\begin{tikzpicture}[nodes = {font=\\sffamily}]\n");
     strcat(CodBeamer, "\\foreach \\percent/\\name in {\n");
-    // ari: recalcular antes las cosas y luego utilizarlas, recalcular el numero del porcentaje
-    printf("CANTIDADEES\n\n"); 
+
     for(int j = 0; j < 8 ; j++){
         percentTokens[j] = (numtokens[j] * 100);
         percentTokens[j]= percentTokens[j] / cantidad; 
-        printf("Percent: %d %.2f \n", j,percentTokens[j]);
-        printf("NumTokens: %d %d \n", j,numtokens[j]);
+
     }
     float cantidadPercent = percentTokens[1] + percentTokens[2] + percentTokens[3] + percentTokens[4] + percentTokens[5] + percentTokens[6]+ percentTokens[7];
     
@@ -751,6 +749,7 @@ void openfilepreprocess(FILE *f, char *nombreArchivo){
         tmpFile = fopen("config.c", "wt");
         preprocess(f, nombreArchivo);
         fclose(tmpFile);
+	error=false;
 
 
     }
@@ -773,6 +772,7 @@ int main(int argc, char *argv[])
     FILE *f = leerArchivo(argv[1]);
     openfilepreprocess(f, argv[1]);
     if (error == false){
+
         FILE *temporal = fopen("config.c", "r");
         imprimirArchivoEntrada(temporal);
         fclose(temporal);

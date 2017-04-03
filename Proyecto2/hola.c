@@ -6,7 +6,14 @@
 #define c 30 + a + b + 10
 #define a 40 + x
 
+
+//hola 
+//adios oidhofhofaushoi @@ \#\#
+
 int funcionPruebaSegunda(){
-	printf("Prueba") ;
-	int t = c ;
+	printf("Prueba");
+
+/*	int t = c;
+	t++;
+*/
 }

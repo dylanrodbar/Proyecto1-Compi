@@ -1,6 +1,7 @@
 %{
 #include "myscanner.h"
 void yyerror(char *,char *, int);
+int linea;
 %}
 
 %%
@@ -38,9 +39,19 @@ void yyerror(char *,char *, int);
 "volatile"		  return KEYWORD;
 "while"			  return KEYWORD;
 
-"/*"[a-zA-Z]*[_a-zA-Z0-9]*"*/"* return CONSTANT;
-"//"[a-zA-Z]*[_a-zA-Z0-9]*      return CONSTANT;
+[0-9][0-9]*		  return INTEGER;
 
+L?"/*"(\\.|[^\\"])*"*/"       		        return CONSTANT;
+"/*"(.|$)*"*/"                		        return CONSTANT;
+"/*"$*"*/"                		        return CONSTANT;
+"//".*$                  		        return CONSTANT;
+0[xX][a-fA-F0-9]+(u|U|l|L)*?	     		return CONSTANT; 
+0[0-9]+(u|U|l|L)*?		     		return CONSTANT; 
+[0-9]+(u|U|l|L)*?		     		return CONSTANT; 
+L?'(\\.|[^\\'])+'	             		return CONSTANT; 
+[0-9]+[Ee][+-]?[0-9]+(f|F|l|L)?		 	return CONSTANT; 
+[0-9]*"."[0-9]+([Ee][+-]?[0-9]+)?(f|F|l|L)?	return CONSTANT; 
+[0-9]+"."[0-9]*([Ee][+-]?[0-9]+)?(f|F|l|L)?	return CONSTANT; 
 
 "{"                       return PUNTUACTOR;
 "}"                       return PUNTUACTOR;
@@ -98,12 +109,12 @@ void yyerror(char *,char *, int);
 [a-zA-Z][_a-zA-Z0-9]*	  return IDENTIFIER;
 L?\"(\\.|[^\\"])*\"       return LITERAL;
 L?\'(\\.|[^\\"])*\'       return LITERAL;
-[0-9][0-9]*		  return INTEGER;
+
 
 
                   
 [ \t\n]			  ;
-.			  yyerror("Error léxico con \"%s\", en línea %i.\n",yytext,yylineno);
+.			  yyerror("Error léxico con \"%s\", en línea %i.\n",yytext,linea);
 
 
 %%
