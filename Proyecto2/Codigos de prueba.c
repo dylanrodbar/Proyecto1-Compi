@@ -354,3 +354,249 @@ bool holaFuncion()
 
 
 //*****************************Octava Prueba***********************************
+#include "prueba.h"
+#define x 10 + 20
+#define a 5
+#define b a + 6 + 3
+#define a 20 
+#define c 30 + a + b + 10
+#define a 40 + x
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int 2funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+
+//*****************************Novena Prueba***********************************
+#include "prueba.h"
+#include "prueba.h"
+#define x 10 + 20
+#define a 5
+#define b a + 6 + 3
+#define a 20 
+#define c 30 + a + b + 10
+#define a 40 + x
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+//*****************************Decima Prueba***********************************
+
+#define j 87 + 3 
+#define n 10 + j
+#include "prueba.h"
+
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+int laNota(){
+  if (j == 90){
+    printf("### no nos puede ir mal ###\n");
+  }
+  else{
+    return n; 
+  }
+}
+
+
+//******************************Undecimo**************************************
+//se cae en el else - return 
+
+#include "prueba.h"
+#define x 10 + 20
+#define a 5
+#define b a + 6 + 3
+#define a 20 
+#define c 30 + a + b + 10
+#define a 40 + x
+
+
+
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+int laNota(){
+  if (j == 90){
+    printf("### no nos puede ir mal ###\n");
+  }
+  else{
+    return a; 
+  }
+}
+
+//*******************************************************************
+//tambien se cae esta / segfault 
+
+#include "prueba.h"
+#define x 10 + 20
+#define a 5
+#define b a + 6 + 3
+#define a 20 
+#define c 30 + a + b + 10
+#define a 40 + x
+
+
+
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+int laNota(){
+  if (j == 90){
+    printf("### no nos puede ir mal ###\n");
+  }
+  else{
+
+  }
+}
+
+//*********************************************************
+// tambien se cae D: pero con error de mostrar el pdf no segfault
+
+
+#define x 10 + 20
+#define a 5
+#define b a + 6 + 3
+#define a 20 
+#define c 30 + a + b + 10
+#define a 40 + x
+
+
+
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+int laNota(){
+  if (j == 90){
+    printf("### no nos puede ir mal ###\n");
+    yuya = "no";
+  }
+  else{
+
+  }
+}
+
+
+//******************************
+//problemas, no muestra laparte del if pero medio sirve
+
+#include "prueba.h"
+#define x 10 + 20
+#define a 5
+#define b a + 6 + 3
+#define a 20 
+#define c 30 + a + b + 10
+#define a 40 + x
+
+
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+int laNota(){
+  if (j == 90){
+    //printf("### no nos puede ir mal ###\n");
+    //yuya = "no";
+  }
+  else{
+
+  }
+}
+
+
+
+
+//********************DUODECIMA Prueba************************
+//esta no da problemas
+
+#include "prueba.h"
+#define x 10 + 20
+#define a 5
+#define b a + 6 + 3
+#define a 20 
+#define c 30 + a + b + 10
+#define a 40 + x
+
+
+
+
+
+//"hola" 
+//adios oidhofhofaushoi @@ \#\#
+
+int funcionPruebaSegunda(){
+/*  printf("Prueba");
+  int t = c;
+  t++;
+*/
+}
+
+int laNota(){
+  if (j == 90){
+    
+    yuya = "no";
+  }
+  else{
+    yuya = "so";
+  }
+}
+
+
