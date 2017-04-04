@@ -580,7 +580,9 @@ void preprocess(FILE *file, char *nombreArchivo)
                 if (in_char == '\n') numeroLinea++;
             }
             if (in_char == '\n') numeroLinea++; 
-            if(strcmp(tipo, "include") != 0 || strcmp(tipo, "include") != 0){
+            
+            if(strcmp(tipo, "include") != 0 && strcmp(tipo, "define") != 0){
+                
                 fputs(tipoContenido, tmpFile);
                 fputc(in_char, tmpFile);
                 //if(in_char == '\n') numeroLinea++;
@@ -588,6 +590,7 @@ void preprocess(FILE *file, char *nombreArchivo)
 
             //if(strcmp(tipo, "include") != 0 || strcmp(tipo, "include") != 0){}
             else{
+
             in_char = getc(file);
 
             /*Se toma el valor después de define o include, el cual puede ser define o include, el cual se almacena en la variable palabra*/
@@ -696,9 +699,11 @@ void preprocess(FILE *file, char *nombreArchivo)
                   palabra[i] = in_char;
                   i++;
                   in_char = getc(file);
+                  if (in_char == EOF) break;
             
             }
             
+            if (in_char == EOF) break;
             
             /*Se evalúa si el nuevo valor existe en la tabla*/
             int existe = existeDefine(palabra); 
@@ -735,7 +740,6 @@ void preprocess(FILE *file, char *nombreArchivo)
                     }
                     
                     else{
-
                         /*Si uno de los componentes es ERROR*/
                         if(esError(hilera)){
                             error = true;
@@ -809,7 +813,7 @@ void openfilepreprocess(FILE *f, char *nombreArchivo){
         tmpFile = fopen("config.c", "wt");
         preprocess(f, nombreArchivo);
         fclose(tmpFile);
-	error=false;
+	//error=false;
 
 
     }
