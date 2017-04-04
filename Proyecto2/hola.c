@@ -11,10 +11,14 @@
 //adios oidhofhofaushoi @@ & \n $ 
 
 $
+
 int 2funcionPruebaSegunda(){
 	/*printf("Prueba#&\n");
 	int t = c;#
 	t++;*/
  //#
+	
 
 }
+
+ 

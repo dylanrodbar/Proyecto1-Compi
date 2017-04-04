@@ -547,21 +547,24 @@ void preprocess(FILE *file, char *nombreArchivo)
     int numeroLinea = 1;
     char palabra[25] = "";
     char vDefine[300] = ""; /*Es el valor que va después del define, ejemplo: #define h 5 + 4 + 3, vDefine toma el 5 + 4 + 3*/
-    char tipo[8] = "";
+    char tipo[10] = "";
+    char tipoContenido[50] = "";
     
     
     int j = 0; //contador para tipo
     int i = 0; //contador para palabra
     int a = 0; //contador para vDefine
-    
+    int l = 0; //contador para tipoContenido
     while ((in_char = getc(file)) != EOF)
     {
-
+            
 
         /*Se encuentra un #, por lo que seguidamente se tomará el valor siguiente para luego evaluar si es include o define*/
         if (in_char == '#')
         {
-            
+            tipoContenido[l] = '#';
+            l++;
+        
             /*Con getc obtenemos el siguiente caracter y lo guardamos en in_char*/
             in_char = getc(file);
             
@@ -570,10 +573,21 @@ void preprocess(FILE *file, char *nombreArchivo)
             while (!isspace(in_char))
             {
                 tipo[j] = in_char;
+                tipoContenido[l] = in_char;
                 j++;
+                l++;
                 in_char = getc(file);
+                if (in_char == '\n') numeroLinea++;
             }
-            
+            if (in_char == '\n') numeroLinea++; 
+            if(strcmp(tipo, "include") != 0 || strcmp(tipo, "include") != 0){
+                fputs(tipoContenido, tmpFile);
+                fputc(in_char, tmpFile);
+                //if(in_char == '\n') numeroLinea++;
+            }
+
+            //if(strcmp(tipo, "include") != 0 || strcmp(tipo, "include") != 0){}
+            else{
             in_char = getc(file);
 
             /*Se toma el valor después de define o include, el cual puede ser define o include, el cual se almacena en la variable palabra*/
@@ -662,8 +676,11 @@ void preprocess(FILE *file, char *nombreArchivo)
                                    
 
             }
-
             numeroLinea++;
+        }
+            
+
+            
             
             
         } 
@@ -754,9 +771,11 @@ void preprocess(FILE *file, char *nombreArchivo)
         a=0;
         j=0;
         i=0;
+        l=0;
         memset(&palabra[0], 0, sizeof(palabra));
         memset(&tipo[0], 0, sizeof(tipo));
         memset(&vDefine[0], 0, sizeof(vDefine));
+        memset(&tipoContenido[0], 0, sizeof(tipoContenido));
         
         
         
@@ -781,6 +800,7 @@ void imprimirArchivoEntrada(FILE *temporal){
     while ((in_char = getc(temporal)) != EOF){
         putchar(in_char);
     } 
+    putchar('\n');
 }
 void openfilepreprocess(FILE *f, char *nombreArchivo){
     if(seLeyoArchivo(f))

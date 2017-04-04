@@ -58,9 +58,9 @@ El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultim
 Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \%array y as\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\Directivas especiales:\begin{itemize} \item ECHO: copia yytext a la salida del esc\'aner  \item BEGIN: pone al esc\'aner en la codici\'on de arranque correspondiente. \item REJECT: ordena a proceder con al "segunda mejor regla." \item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\end{itemize}\end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{green}{holaFuncion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{int} \textcolor{green}{b} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
+\colorbox{red}{\#}\textcolor{green}{hola} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{adios} \textcolor{red}{5} \textcolor{blue}{+} \textcolor{green}{hola} \textcolor{blue}{+} \textcolor{red}{5} \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{hi} \textcolor{red}{30} \textcolor{blue}{-} \textcolor{green}{adios} \textcolor{green}{bool} \textcolor{green}{holaFuncion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{green}{hola} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{b} \textcolor{blue}{=} \textcolor{green}{hola} \textcolor{orange}{;} \\ 
  \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Hello, its me"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
@@ -71,8 +71,9 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{C\'odigo Analizado}
 \textcolor{orange}{\}} \\ 
- \textcolor{purple}{//"hola" } \\ 
- \textcolor{purple}{//adios oidhofhofaushoi @@ \& \textbackslash n \$ int 2funcionPruebaSegunda()\{} \\ 
+ \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{x} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{20} \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{a} \textcolor{red}{5} \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{b} \textcolor{green}{a} \textcolor{blue}{+} \textcolor{red}{6} \textcolor{blue}{+} \textcolor{red}{3} \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{a} \textcolor{red}{20} \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{c} \textcolor{red}{30} \textcolor{blue}{+} \textcolor{green}{a} \textcolor{blue}{+} \textcolor{green}{b} \textcolor{blue}{+} \textcolor{red}{10} \colorbox{red}{\#}\textcolor{green}{define} \textcolor{green}{a} \textcolor{red}{40} \textcolor{blue}{+} \textcolor{green}{x} \textcolor{purple}{//"hola" } \\ 
+ \textcolor{purple}{//adios oidhofhofaushoi @@ \& \textbackslash n \$ } \\ 
+ \colorbox{red}{\$}\textcolor{magenta}{int} \colorbox{red}{2funcionPruebaSegunda}\textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
  \textcolor{purple}{/*printf("Prueba\#\&\textbackslash n")\;
 	int t = c\;\#
 	t++\;*/} \\ 
@@ -82,8 +83,8 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=47, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 5) (2 , 5) (3 , 8) (4 , 4) (5 , 4) (6 , 19) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=96, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 6) (2 , 15) (3 , 34) (4 , 4) (5 , 13) (6 , 22) (7 , 2)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -96,13 +97,13 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-10.64/KEYWORD,
-10.64/INTEGER,
-17.02/IDENTIFIER,
-8.51/CONSTANT,
-8.51/OPERATOR,
-40.43/PUNTUACTOR,
-4.26/LITERAL
+6.25/KEYWORD,
+15.62/INTEGER,
+35.42/IDENTIFIER,
+4.17/CONSTANT,
+13.54/OPERATOR,
+22.92/PUNTUACTOR,
+2.08/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1
