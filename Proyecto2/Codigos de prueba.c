@@ -353,7 +353,7 @@ bool holaFuncion()
 
 
 
-//*****************************Octava Prueba***********************************
+//*****************************Octava Prueba*********************************** ya funca
 #include "prueba.h"
 #define x 10 + 20
 #define a 5
@@ -374,7 +374,7 @@ int 2funcionPruebaSegunda(){
 }
 
 
-//*****************************Novena Prueba***********************************
+//*****************************Novena Prueba*********************************** ya funca :D
 #include "prueba.h"
 #include "prueba.h"
 #define x 10 + 20
@@ -423,8 +423,9 @@ int laNota(){
 }
 
 
-//******************************Undecimo**************************************
-//se cae en el else - return 
+//******************************Undecimo 1************************************** yafunca
+
+
 
 #include "prueba.h"
 #define x 10 + 20
@@ -456,9 +457,9 @@ int laNota(){
     return a; 
   }
 }
+//******************************Undecimo 2**************************************
+//******************************************************************* ya funca 
 
-//*******************************************************************
-//tambien se cae esta / segfault 
 
 #include "prueba.h"
 #define x 10 + 20
@@ -528,7 +529,7 @@ int laNota(){
 
 
 //******************************
-//problemas, no muestra laparte del if pero medio sirve
+//problemas, no muestra laparte del if pero medio sirve - es por \n y ### 
 
 #include "prueba.h"
 #define x 10 + 20
