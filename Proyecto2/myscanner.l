@@ -107,14 +107,14 @@ L?'(\\.|[^\\'])+'	             		return CONSTANT;
 
 
 [a-zA-Z][_a-zA-Z0-9]*	  return IDENTIFIER;
-L?\"(\\.|[^\\"])*\"       return LITERAL;
-L?\'(\\.|[^\\"])*\'       return LITERAL;
+L?\"(\\.|[^\\"]|\n)*\"    return LITERAL;
+L?\'(\\.|[^\\"]|\n)*\'       return LITERAL;
 
 
 
                   
 [ \t\n]			  ;
-.			  yyerror("Error léxico con \"%s\", en línea %i.\n",yytext,linea);
+.|[0-9]*[a-zA-Z][_a-zA-Z0-9]*   yyerror("Error léxico con \"%s\", en línea %i.\n",yytext,linea);
 
 
 %%

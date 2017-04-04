@@ -65,26 +65,25 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
  \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
  \textcolor{orange}{\}} \\ 
  \textcolor{magenta}{int} \textcolor{green}{funcion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una funciÃ³n"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
+ \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una funciÃÿÿÿÿÿÿÿ³ÿÿÿÿÿÿÿn"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
  \textcolor{magenta}{return} \textcolor{red}{0} \textcolor{orange}{;} \\ 
  \end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
 \textcolor{orange}{\}} \\ 
  \textcolor{purple}{//"hola" } \\ 
- \textcolor{purple}{//adios oidhofhofaushoi @@ \#\#} \\ 
- \textcolor{magenta}{int} \textcolor{green}{funcionPruebaSegunda} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{purple}{/*	printf("Prueba");
-	int t = c;
-	t++;
-*/} \\ 
+ \textcolor{purple}{//adios oidhofhofaushoi @@ \& \textbackslash n \$ int 2funcionPruebaSegunda()\{} \\ 
+ \textcolor{purple}{/*printf("Prueba\#\&\textbackslash n")\;
+	int t = c\;\#
+	t++\;*/} \\ 
+ \textcolor{purple}{//\#} \\ 
  \textcolor{orange}{\}} \\ 
  \textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=51, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 5) (3 , 9) (4 , 3) (5 , 4) (6 , 22) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=47, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 5) (2 , 5) (3 , 8) (4 , 4) (5 , 4) (6 , 19) (7 , 2)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -97,13 +96,13 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-11.76/KEYWORD,
-9.80/INTEGER,
-17.65/IDENTIFIER,
-5.88/CONSTANT,
-7.84/OPERATOR,
-43.14/PUNTUACTOR,
-3.92/LITERAL
+10.64/KEYWORD,
+10.64/INTEGER,
+17.02/IDENTIFIER,
+8.51/CONSTANT,
+8.51/OPERATOR,
+40.43/PUNTUACTOR,
+4.26/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1

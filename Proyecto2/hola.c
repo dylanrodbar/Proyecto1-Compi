@@ -8,11 +8,13 @@
 
 
 //"hola" 
-//adios oidhofhofaushoi @@ \#\#
+//adios oidhofhofaushoi @@ & \n $ 
 
-int funcionPruebaSegunda(){
-/*	printf("Prueba");
-	int t = c;
-	t++;
-*/
+$
+int 2funcionPruebaSegunda(){
+	/*printf("Prueba#&\n");
+	int t = c;#
+	t++;*/
+ //#
+
 }

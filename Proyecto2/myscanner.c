@@ -167,7 +167,7 @@ void CheckToken(char *text){
     else if(strcmp(yytext, "||")==0){
 	strcat(CodBeamer,"\\|");
 	}
-    else if(strcmp(yytext, "|")==0|strcmp(yytext, ">")==0|strcmp(yytext, "<")==0){
+    else if(strcmp(yytext, "|")==0||strcmp(yytext, ">")==0||strcmp(yytext, "<")==0){
 	strcat(CodBeamer,"$");
 	strcat(CodBeamer,yytext);	
 	strcat(CodBeamer,"$");
@@ -196,6 +196,15 @@ void CheckToken(char *text){
     else if(strcmp(yytext, "<<")==0){
 	strcat(CodBeamer,"$<<$");
 	}
+    else if(yytext[0] =='"'){
+	analizadorStrings(yytext);
+    }
+    else if(yytext[0] =='/' && yytext[1]=='*'){
+	analizadorStrings(yytext);
+    }
+    else if(yytext[0] =='/' && yytext[1]=='/'){
+	analizadorStrings(yytext);
+    }	
     else{
         strcat(CodBeamer,yytext);
      }
@@ -237,7 +246,38 @@ int scanner(void)
     return 0;
 
 }
+void analizadorStrings(char* s){
+char* val[2];
+int len=strlen(s);
+for(int i=0;i<len;i++){
+	val[0] = s[i];
+	val[1] = '\0';
+	if(s[i]=='$'|| s[i]=='#'||s[i]==';' || s[i]=='{' || s[i]=='}'||s[i]=='&' || s[i]== '%'){
+	       strcat(CodBeamer, "\\");
+	       strcat(CodBeamer, val);     
+	       }
+        else if(s[i]== '~'){
+		strcat(CodBeamer,"\\sim");
+	}
+        else if(s[i]== '^'){
+		strcat(CodBeamer,"\\Lambda");
+	}
+	else if(s[i]== '|'||s[i]== '>'||s[i]== '<'){
+		strcat(CodBeamer,"$");
+		strcat(CodBeamer,val);	
+		strcat(CodBeamer,"$");
+	}
+       else if(s[i]== '\\'){
+               strcat(CodBeamer,"\\textbackslash ");	
+}
+       else
+	   strcat(CodBeamer, val);
+	     
 
+
+}
+
+}
 void generateHistogram(){
     strcat(CodBeamer,"\\end{frame}\n");
     strcat(CodBeamer,"\\begin{frame}\n");
@@ -728,7 +768,7 @@ void preprocess(FILE *file, char *nombreArchivo)
 void yyerror(char *texto,char *simbolo, int linea){
      printf(texto,simbolo,linea);
      strcat(CodBeamer,"\\colorbox{red}{");
-     if(strcmp(yytext, "$")==0 || strcmp(yytext, "#")==0){
+     if(strcmp(yytext, "$")==0 || strcmp(yytext,"#")==0){
        strcat(CodBeamer, "\\");
        }
      strcat(CodBeamer, simbolo);
