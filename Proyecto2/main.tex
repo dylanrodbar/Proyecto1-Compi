@@ -71,19 +71,20 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \begin{frame}
 \frametitle{C\'odigo Analizado}
 \textcolor{purple}{//"hola" } \\ 
- \textcolor{purple}{//adios oidhofhofaushoi @@ \& \textbackslash n \$ } \\ 
- \colorbox{red}{\$}\textcolor{magenta}{int} \colorbox{red}{2funcionPruebaSegunda}\textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{purple}{//adios oidhofhofaushoi Ãÿÿÿÿÿÿÿ±ÿÿÿÿÿÿÿÃÿÿÿÿÿÿÿ±ÿÿÿÿÿÿÿ @@ \& \textbackslash n \$ \# } \\ 
+ \textcolor{purple}{/*\#*/} \\ 
+ \colorbox{red}{\$}\colorbox{red}{\#}\colorbox{red}{Ã}\colorbox{red}{±}\textcolor{magenta}{int} \colorbox{red}{2funcionPruebaSegunda}\textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
  \textcolor{purple}{/*printf("Prueba\#\&\textbackslash n")\;
 	int t = c\;\#
 	t++\;*/} \\ 
  \textcolor{purple}{//\#} \\ 
  \colorbox{red}{\#}\textcolor{orange}{\}} \\ 
- \textcolor{red}{40} \textcolor{blue}{+} \textcolor{green}{ERROR} \colorbox{red}{\#}\textcolor{white}{} \end{frame}
+ \colorbox{red}{\#}\textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=53, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 6) (3 , 9) (4 , 4) (5 , 5) (6 , 21) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=51, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 6) (2 , 5) (3 , 8) (4 , 5) (5 , 4) (6 , 21) (7 , 2)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -96,13 +97,13 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-11.32/KEYWORD,
-11.32/INTEGER,
-16.98/IDENTIFIER,
-7.55/CONSTANT,
-9.43/OPERATOR,
-39.62/PUNTUACTOR,
-3.77/LITERAL
+11.76/KEYWORD,
+9.80/INTEGER,
+15.69/IDENTIFIER,
+9.80/CONSTANT,
+7.84/OPERATOR,
+41.18/PUNTUACTOR,
+3.92/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1

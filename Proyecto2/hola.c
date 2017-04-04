@@ -8,10 +8,11 @@
 
 
 //"hola" 
-//adios oidhofhofaushoi @@ & \n $ 
-
+//adios oidhofhofaushoi ññ @@ & \n $ # 
+/*#*/
 $
-
+#
+ñ
 int 2funcionPruebaSegunda(){
 	/*printf("Prueba#&\n");
 	int t = c;#
@@ -21,6 +22,6 @@ int 2funcionPruebaSegunda(){
 	#
 
 }
-a
+
 #
  

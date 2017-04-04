@@ -14,7 +14,7 @@ bool changeline=false;
 char *includes[] = {};
 struct defineS defines[]; 
 int numIncludes = -1; //contador de los includes que se tendrán en el array de chars includes
-bool *error  = false;
+bool error  = false;
 int numDefines = -1;  //contador de los defines que se tendrán en el array de structs defines
 FILE *tmpFile;
 
@@ -252,6 +252,7 @@ int len=strlen(s);
 for(int i=0;i<len;i++){
 	val[0] = s[i];
 	val[1] = '\0';
+        printf("%c",s[i]);
 	if(s[i]=='$'|| s[i]=='#'||s[i]==';' || s[i]=='{' || s[i]=='}'||s[i]=='&' || s[i]== '%'){
 	       strcat(CodBeamer, "\\");
 	       strcat(CodBeamer, val);     
@@ -269,7 +270,10 @@ for(int i=0;i<len;i++){
 	}
        else if(s[i]== '\\'){
                strcat(CodBeamer,"\\textbackslash ");	
-}
+	
+}      
+       else if(s[i]== '~'&&s[i+1]== 'n'){
+               strcat(CodBeamer,"\\~n");}	
        else
 	   strcat(CodBeamer, val);
 	     
