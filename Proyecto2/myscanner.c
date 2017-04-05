@@ -695,15 +695,18 @@ void preprocess(FILE *file, char *nombreArchivo)
         /*Si no se encuentra al principio un #, se lee completamente la siguiente palabra*/
         else
         {
-            
+            int char_anterior;
             /*Se lee el siguiente valor hasta encontrar un espacio*/
             while (!isspace(in_char))
             {
-
+                  char_anterior = in_char;
                   palabra[i] = in_char;
                   i++;
                   in_char = getc(file);
-                  if (in_char == EOF) break;
+                  if (in_char == EOF){
+                    fputc(char_anterior, tmpFile);
+                    break;
+                  } 
             
             }
             

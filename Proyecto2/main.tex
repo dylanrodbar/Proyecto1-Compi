@@ -58,33 +58,30 @@ El yylex() es una funci\'on que procesa tokens desde donde lo dejaron la \'ultim
 Las acciones puede modificar los yytext exepto su largo, para ello se le puede agregar un \%array y as\'i modificar totalmente la variable yytext, que es donde se guarda el valor del token actual.\\Directivas especiales:\begin{itemize} \item ECHO: copia yytext a la salida del esc\'aner  \item BEGIN: pone al esc\'aner en la codici\'on de arranque correspondiente. \item REJECT: ordena a proceder con al "segunda mejor regla." \item yymore(): despues de emparejar una regla el valor de yytext actual debe se reemplazado por el siguiente.\end{itemize}\end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{green}{holaFuncion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{magenta}{int} \textcolor{green}{a} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{int} \textcolor{green}{b} \textcolor{blue}{=} \textcolor{red}{10} \textcolor{blue}{+} \textcolor{red}{3} \textcolor{orange}{;} \\ 
- \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Hello, its me"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{return} \textcolor{green}{true} \textcolor{orange}{;} \\ 
+\textcolor{purple}{//adios oidhofhofaushoi @@ \textbackslash \#\textbackslash \#} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{funcionPruebaSegunda} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{purple}{/*  printf("Prueba")\;
+  int t = c\;
+  t++\;
+*/} \\ 
  \textcolor{orange}{\}} \\ 
- \textcolor{magenta}{int} \textcolor{green}{funcion} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"Esto es una funciÃÿÿÿÿÿÿÿ³ÿÿÿÿÿÿÿn"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
- \textcolor{magenta}{return} \textcolor{red}{0} \textcolor{orange}{;} \\ 
+ \textcolor{magenta}{int} \textcolor{green}{laNota} \textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{magenta}{if} \textcolor{orange}{(} \textcolor{green}{j} \textcolor{blue}{=} \textcolor{blue}{=} \textcolor{red}{90} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
+ \textcolor{green}{printf} \textcolor{orange}{(} \textcolor{pink}{"\#\#\# no nos puede ir mal \#\#\#\textbackslash n"} \textcolor{orange}{)} \textcolor{orange}{;} \\ 
+ \textcolor{green}{yuya} \textcolor{blue}{=} \textcolor{pink}{"no"} \textcolor{orange}{;} \\ 
+ \textcolor{orange}{\}} \\ 
  \end{frame}
 \begin{frame}
 \frametitle{C\'odigo Analizado}
-\textcolor{purple}{//"hola" } \\ 
- \textcolor{purple}{//adios oidhofhofaushoi Ãÿÿÿÿÿÿÿ±ÿÿÿÿÿÿÿÃÿÿÿÿÿÿÿ±ÿÿÿÿÿÿÿ @@ \& \textbackslash n \$ \# } \\ 
- \textcolor{purple}{/*\#*/} \\ 
- \colorbox{red}{\$}\colorbox{red}{\#}\colorbox{red}{Ã}\colorbox{red}{±}\textcolor{magenta}{int} \colorbox{red}{2funcionPruebaSegunda}\textcolor{orange}{(} \textcolor{orange}{)} \textcolor{orange}{\{} \\ 
- \textcolor{purple}{/*printf("Prueba\#\&\textbackslash n")\;
-	int t = c\;\#
-	t++\;*/} \\ 
- \textcolor{purple}{//\#} \\ 
- \colorbox{red}{\#}\textcolor{orange}{\}} \\ 
- \colorbox{red}{\#}\textcolor{white}{} \end{frame}
+\textcolor{magenta}{else} \textcolor{orange}{\{} \\ 
+ \textcolor{orange}{\}} \\ 
+ \textcolor{orange}{\}} \\ 
+ \textcolor{white}{} \end{frame}
 \begin{frame}
 \frametitle{Histograma}
 \begin{tikzpicture}
-\begin{axis}[ybar interval, ymax=51, ymin=0, minor y tick num = 3]
-\addplot coordinates { (1 , 6) (2 , 5) (3 , 8) (4 , 5) (5 , 4) (6 , 21) (7 , 2)  (8, 0) }; 
+\begin{axis}[ybar interval, ymax=36, ymin=0, minor y tick num = 3]
+\addplot coordinates { (1 , 4) (2 , 1) (3 , 5) (4 , 3) (5 , 3) (6 , 18) (7 , 2)  (8, 0) }; 
 \end{axis}
 \end{tikzpicture}
 \end{frame}
@@ -97,13 +94,13 @@ Las acciones puede modificar los yytext exepto su largo, para ello se le puede a
 \newcount\ind \ind=3
 \begin{tikzpicture}[nodes = {font=\sffamily}]
 \foreach \percent/\name in {
-11.76/KEYWORD,
-9.80/INTEGER,
-15.69/IDENTIFIER,
-9.80/CONSTANT,
-7.84/OPERATOR,
-41.18/PUNTUACTOR,
-3.92/LITERAL
+11.11/KEYWORD,
+2.78/INTEGER,
+13.89/IDENTIFIER,
+8.33/CONSTANT,
+8.33/OPERATOR,
+50.00/PUNTUACTOR,
+5.56/LITERAL
  } {
 \ifx\percent\empty\else
 \global\advance\cyclecount by 1
