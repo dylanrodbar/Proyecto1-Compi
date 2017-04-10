@@ -9,15 +9,23 @@
 extern int yylex();
 extern int yylineno;
 extern char* yytext;
+extern FILE* yyin;
 extern int linea=1;
 bool changeline=false;
-char *includes[] = {};
-struct defineS defines[]; 
-int numIncludes = -1; //contador de los includes que se tendrán en el array de chars includes
-bool error  = false;
-int numDefines = -1;  //contador de los defines que se tendrán en el array de structs defines
-FILE *tmpFile;
 
+/*
+    Estas son las variables que serán accesibles durante todo el preprocesador
+*/
+
+/*****************************************************/
+char *includes[] = {};     //Tabla con las cadenas que representarán a los includes que se encuentren en el programa
+struct defineS defines[100] = {};  //Tabla con las cadenas que representarán a los includes que se encuentren en el programa
+int numIncludes = -1;      //Contador de los includes que se tendrán en el array de cadenas includes
+int numDefines = -1;       //Contador de los defines que se tendrán en el array de structs defines
+bool error  = false;       //Booleano que indica cuando se encuentra un error en el programa
+bool preproceso = false;
+FILE *tmpFile;             //Archivo temporal que representa a la entrada para el scanner
+/*****************************************************/
 
 FILE *beamer;
 char *names[] ={NULL,"auto","break","case","char","const","continue","default","do",
@@ -223,7 +231,7 @@ int scanner(void)
         ntoken = nextToken();
     	strcat(CodBeamer,"\\textcolor{");
     	strcat(CodBeamer,color[ntoken]);
-   	strcat(CodBeamer,"}{");
+   	    strcat(CodBeamer,"}{");
     	CheckToken(yytext);
 	
         strcat(CodBeamer,"} ");
@@ -400,9 +408,68 @@ void identifierTokenType(int i){
     }
 }
 
-/*Función encargada de evaluar si ya existe una librería de inclusión en la tabla de inclusiones*/
-bool existeInclude(char include[25])
+/*
+    Función encargada de quitar los "" al literal del include
+*/
+char *modificarInclude(char *include){
+    
+    char *resultado;
+    resultado = (char*)malloc(10);
+    int n;
+    int i;
+    n = 0;
+    i = 0;
+
+    while(include[n] != '\0'){
+        if(include[n] != '"'){
+
+            resultado[i] = include[n];
+            i++;
+        
+        }
+        
+        n++;
+    
+    }
+    
+    return resultado;
+}
+
+/*
+    Función encargada de evaluar si ya existe un define en la tabla de definiciones
+*/
+
+int existeDefine(char *define)
 {
+    for(int m = 0; m<=numDefines; m++)
+    {
+  
+        /*
+            Si encontramos que el valor coincide con la tabla de defines, se retorna verdadero
+            Función strcmp: se comparan los dos parámetros que recibe
+        */
+  
+        if(strcmp(defines[m].palabra, define) == 0)
+        {
+
+            return m;
+        
+        }
+
+    }
+    
+    return -1;
+
+}
+
+
+/*
+    Función encargada de evaluar si ya existe un include en la tabla de inclusiones
+*/
+
+bool existeInclude(char *include)
+{
+
     for(int i = 0; i<numIncludes; i++)
     {
 
@@ -419,109 +486,91 @@ bool existeInclude(char include[25])
 
 }
 
-
-/*Función encargada de evaluar si ya existe un define en la tabla de definiciones*/
-int existeDefine(char define[25])
-{
-    for(int m = 0; m<=numDefines; m++)
-    {
-        /*Si encontramos que el valor coincide con la tabla de defines, se retorna verdadero*/
-        /*función strcmp: se comparan los dos parámetros que recibe*/
-        if(strcmp(defines[m].palabra, define) == 0)
-        {
-            return m;
-        }
-
-    }
+/*
+    Función encargada de tomar el valor que tendrá el define, se lee hasta encontrar un salto de línea
+*/
+char* tomarValorDefine(){
     
-    return -1;
+    char* valorDefine;
+    int ntoken;
+    valorDefine = (char*)malloc(10);
 
-}
-
-
-bool esNumero(char *valor){
-    int i = 0;
-    while(valor[i]!= '\0'){
-        if(!isdigit(valor[i])){
-            return false;
-        }
-
-        i++;
-
-    }
-    return true;
+    ntoken = nextToken();
     
-}
+    /*
+        Se lee hasta el salto de línea
+    */
+    while(strcmp(yytext, "\n") != 0){
+        
+        strcat(valorDefine, yytext); //Se van concatenando los valores que se van encontrando
+        
+        ntoken = nextToken();   
 
-
-bool esOperador(char *valor){
-    if(valor[0] == '+' || valor[0] == '-' || valor[0] == '*' || valor[0] == '/')
-        return true;
-    else
-        return false;
-}
-
-bool esError(char *valor){
-    if(strcmp(valor, "ERROR") == 0){
-        return true;
     }
-    return false;
+
+    return valorDefine;
+
 }
 
-
-
-
-/*Función encargada de devolver el valor correspondiente a la palabra de entrada en el índice*/
-char *valorTablaDefine(int indice)
-{
-    return defines[indice].vDefine; /*Se retorna el valor correspondiente a palabra, el cual está en la posición indice
-                                                   del array defines*/
-}
-
-/*Función encargada de retornar la operación total dentro de un define*/
+/*
+    Función encargada de recibir un valor de un define y luego descomponer este valor según estén en la tabla de defines
+*/
 char *descomponerHileraDefine(char *valorDefine){
-    int i = 0;
-    int a = 0;
-    char temporal[30] = "";
-    char *resultado;
+    
+    int i = 0; //Contador para el valorDefine
+    int a = 0; //Contador para el temporal
+    char temporal[100000] = ""; //El temporal va tomando los valores por espacios
+    char *resultado; //El valor que se retornará
+    char *n; //El valor que se obtendrá de llamar recursivamente a la función
+    int existe; //El índice que indica en cuál posición del array de defines está el elemento buscado
+ 
+    
+
     resultado  = (char*)malloc(10);
-    strcat(valorDefine, " ");
+    
     while(valorDefine[i] != '\0'){
 
-
-
+        /*
+            Se lee hasta que se encuentre un espacio
+        */
         if(!isspace(valorDefine[i])){
+
             temporal[a] = valorDefine[i];
             a++;
+
         }
         
-        else{
-                
 
-            /*Si se encuentra un número o un operador, solo se concatena*/
-            if (esNumero(temporal) || esOperador(temporal)){
-                if(a > 0){
-                    temporal[a] = valorDefine[i];
-                }
+        /*
+            Cuando se encuentra el espacio
+        */
+        else{
+        
+            existe = existeDefine(temporal); //Se busca en cuál índice se encuentra el temporal
+
+            /*
+                Si no existe, solamente se concatena
+            */
+            if (existe == -1){
+                
                 strcat(resultado, temporal);
 
-
             }
 
-            /*En caso contrario, lo concateno con el valor en la tabla*/
+            /*
+                En caso contrario, busco el valor en la tabla, llamando a la función recursivamente
+            */
             else{
-                int existe = existeDefine(temporal);
-                if(existe != -1){
-                    char *n;
-                    n = descomponerHileraDefine(defines[existe].vDefine);
-                    strcat(resultado, n);
-                    strcat(resultado, " ");
-                }
-                else{
-                    strcat(resultado, "ERROR");
-                    strcat(resultado, " ");
-                }
+                
+                char *n;
+                n = descomponerHileraDefine(defines[existe].vDefine);
+                strcat(resultado, n);
+
             }
+
+            /*
+                Se reinicia el temporal
+            */
             a = 0;
             memset(&temporal[0], 0, sizeof(temporal));
         
@@ -533,276 +582,265 @@ char *descomponerHileraDefine(char *valorDefine){
 
 
     }
+
+    /*
+        Después del EOF, aún se tendrá un elemento en el temporal
+    */
+    existe = existeDefine(temporal);
+
+    if (existe == -1){
+
+        strcat(resultado, temporal);
+
+    }
+
+    /*En caso contrario, lo concateno con el valor en la tabla*/
+    else{
+
+        char *n;
+        n = descomponerHileraDefine(defines[existe].vDefine);
+        strcat(resultado, n);
     
+    }
+
     return resultado;
 
     
 }
 
-void activarError(){
-    error = true;
-}
+/*
+    Función que se encarga de realizar las funcionalidades del preprocesador
+*/
+void preprocesador(char *archivo, FILE* archivoTemporal){
 
-/*Función encargada de buscar los #include o #define y manejarlos*/
-void preprocess(FILE *file, char *nombreArchivo)
-{
-    int contador = 0;
-    int in_char;
-    int numeroLinea = 1;
-    char palabra[25] = "";
-    char vDefine[300] = ""; /*Es el valor que va después del define, ejemplo: #define h 5 + 4 + 3, vDefine toma el 5 + 4 + 3*/
-    char tipo[10] = "";
-    char tipoContenido[50] = "";
-    
-    
-    int j = 0; //contador para tipo
-    int i = 0; //contador para palabra
-    int a = 0; //contador para vDefine
-    int l = 0; //contador para tipoContenido
-    while ((in_char = getc(file)) != EOF)
-    {
-            
+    int ntoken;         //El token actual
+    char *valorDefine;  //El valor que tomará un define
+    char *concatenar;   //Es el valor de un elemento en la tabla de defines, se obtendrá de manera descompuesta
+    int existe;         //El índice que indica en cuál posición del array de defines está el elemento buscado
+    char *includeArreglado; //El valor del include sin los ""
 
-        /*Se encuentra un #, por lo que seguidamente se tomará el valor siguiente para luego evaluar si es include o define*/
-        if (in_char == '#')
-        {
-            tipoContenido[l] = '#';
-            l++;
+    ntoken = nextToken();
+    valorDefine = (char*)malloc(10);
+    
+    while(ntoken) {
         
-            /*Con getc obtenemos el siguiente caracter y lo guardamos en in_char*/
-            in_char = getc(file);
+        /*
+            El preprocesador encuentra un include
+        */
+        
+        if(ntoken == INCLUDE){
+            
             
 
-            /*Se toma el valor después de #, el cual puede ser define o include, el cual se almacena en la variable tipo*/
-            while (!isspace(in_char))
-            {
-                tipo[j] = in_char;
-                tipoContenido[l] = in_char;
-                j++;
-                l++;
-                in_char = getc(file);
-                if (in_char == '\n') numeroLinea++;
-            }
-            if (in_char == '\n') numeroLinea++; 
-            
-            if(strcmp(tipo, "include") != 0 && strcmp(tipo, "define") != 0){
+            ntoken = nextToken(); //Se obtiene el siguiente token para evaluar 
+
+            /*
+                Se leen tokens hasta que no hayan espacios
+            */
+
+            while(ntoken == SPACE){
                 
-                fputs(tipoContenido, tmpFile);
-                fputc(in_char, tmpFile);
-                //if(in_char == '\n') numeroLinea++;
+                ntoken = nextToken();
+
+            }
+            
+            /*
+                Debido a que los define son literales
+            */  
+
+            if(ntoken == LITERAL){
+                
+                numIncludes++;
+
+                FILE* siguienteArchivo; //Se creará un nuevo archivo
+
+                includeArreglado = modificarInclude(yytext); //Se obtiene el include sin ""
+                
+
+
+                /*
+                    Si el include es diferente al archivo que lo invocó
+                */
+
+                if(existeInclude(includeArreglado) == false){
+                    
+                    includes[numIncludes] = includeArreglado; //Se agrega a la tabla
+
+                    
+                    
+                    siguienteArchivo = fopen(includeArreglado, "r"); //Se pone en modo lectura, FALTA: función que quite los "" de un literal
+                    
+                    
+
+                    /*
+                        Se le indica a flex cuál es el archivo actual que se está leyendo
+                    */
+
+                    yyin = siguienteArchivo; 
+                    yy_switch_to_buffer(yy_create_buffer( yyin, 50));
+                    preprocesador(yytext, siguienteArchivo); //Se llama de nuevo a la función, pero esta vez con el siguiente archivo incluído
+                    
+                    /*
+                        Después de la llamada recursiva, se borra la inclusión
+                    */
+                    
+                    includes[numIncludes] = ""; 
+                    numIncludes--;
+
+                    yyin = archivoTemporal; //Se le dice a flex cuál archivo se estará leyendo
+                    yy_switch_to_buffer(yy_create_buffer( yyin, 50));
+                }
+
+                /*
+                    Si el include es igual al archivo que lo invocó
+                */
+
+                else{
+
+                    printf("Inclusión duplicada de %s", includeArreglado); //Se notifica el error, revisar esta validación
+                }
+                    
+                
             }
 
-            //if(strcmp(tipo, "include") != 0 || strcmp(tipo, "include") != 0){}
+        }
+
+        
+
+        /*
+            El preprocesador encuentra un define
+        */
+        else if(ntoken == DEFINE){
+
+
+            ntoken = nextToken(); //Se obtiene el siguiente token para evaluar
+
+
+            /*
+                Se leen tokens hasta que no hayan espacios
+            */
+            
+            while(ntoken == SPACE){
+                
+                ntoken = nextToken();
+            
+            }
+
+
+            existe = existeDefine(yytext); //Se evalúa si existe el token
+            numDefines++; //Se suma un nuevo define al contador
+
+            /*
+                Se inicializan los valores del array de defines, debido a que los elementos son de tipo char *
+            */
+            defines[numDefines].palabra = (char*)malloc(10);
+            defines[numDefines].vDefine = (char*)malloc(10);
+                
+
+            /*
+                Si no existe, solo se agrega un nuevo elemento a la lista de defines
+            */
+            
+            if(existe == -1){ 
+                
+                strcpy(defines[numDefines].palabra, yytext);
+                ntoken = nextToken(); //Para no tomar en cuenta el espacio
+                valorDefine = tomarValorDefine(); //Se llama a la función que toma el valor que tendrá el define
+                strcpy(defines[numDefines].vDefine, valorDefine); //Se copia el valor obtenido al valor que tendrá el define
+            
+            }
+
+            /*
+                Si existe, se cambia el valorDefine en la posición "existe" del array de defines    
+            */
+
             else{
 
-            in_char = getc(file);
-
-            /*Se toma el valor después de define o include, el cual puede ser define o include, el cual se almacena en la variable palabra*/
-            while (!isspace(in_char))
-            {
-                if(in_char != '"')
-                {
-                    palabra[i] = in_char;
-                    i++;
-                }
-
-                in_char = getc(file);
-            }
-            
-
-            //Si tipo es include
-            if(strcmp(tipo, "include") == 0)
-            {
-                
-                    
-		            /*Se evalúa si ya existe el include en la tabla de includes
-                    Si ya existe, se notificará*/
-		            
-                    if(existeInclude(palabra))
-		            {
-                        error = true;
-		                printf("Inclusión duplicada de librería %s, en línea %i, en el archivo %s\n", palabra, numeroLinea, nombreArchivo);
-		                              
-                    }
-
-
-		            /*En caso contrario, se seguirán leyendo librerías*/
-		            else
-		            {
-		        
-		                numIncludes++;
-                    
-                        includes[numIncludes] = (char *)malloc(sizeof(char));                
-                        strcpy(includes[numIncludes], palabra);
-		                FILE *n = fopen(palabra, "r");
-		                preprocess(n, palabra);
-		            }
-            
-            }
-
-
-            
-            /*Se encuentra un define*/
-            else if(strcmp(tipo, "define") == 0)
-            {
-             
-                in_char = getc(file);
-                /*Se busca el valor asignado al identificador del define*/
-                 
-
-                while(in_char != '\n'){
-                    
-                    vDefine[a] = in_char;
-                    a++;
-                    in_char = getc(file);    
-                }
-                
+                ntoken = nextToken();
+                valorDefine = tomarValorDefine(); //Se llama a la función que toma el valor que tendrá el define
+                strcpy(defines[existe].vDefine, valorDefine);
+                numDefines--;  //Debido a que se repite un define, el número total se debe restar en uno, para nivelar el array
                 
 
-                numDefines++;
-                 
-                 
-                int ex = existeDefine(palabra); 
-                 
-                /*Si la palabra no existe en la tabla de defines, se agregará el nuevo elemento*/
-                if(ex == -1)
-                {
-
-                    strcpy(defines[numDefines].palabra, palabra);
-                    strcpy(defines[numDefines].vDefine, vDefine);
-                     
-                     
-                }
-                 
-                /*Si la palabra existe en la tabla de defines, se cambiará el valor del elemento por el nuevo encontrado*/
-                else
-                {   
-                    strcpy(defines[ex].vDefine, vDefine);
-                    numDefines--;
-                }  
-                                   
-
             }
-            numeroLinea++;
+
         }
-            
 
-            
-            
-            
-        } 
+        /*
+            El preprocesador encuentra un identificador, por lo que se dispondrá a reemplazar la hilera por una existente
+        */
 
-        /*Si no se encuentra al principio un #, se lee completamente la siguiente palabra*/
-        else
-        {
-            int char_anterior;
-            /*Se lee el siguiente valor hasta encontrar un espacio*/
-            while (!isspace(in_char))
-            {
-                  char_anterior = in_char;
-                  palabra[i] = in_char;
-                  i++;
-                  in_char = getc(file);
-                  if (in_char == EOF){
-                    fputc(char_anterior, tmpFile);
-                    break;
-                  } 
+        else if(ntoken == IDENTIFIER){
+
+            existe = existeDefine(yytext);
+
+            /*
+                Si no existe el identificador en la tabla de defines
+            */
+
+            if(existe == -1){
+
+                fputs(yytext, tmpFile); //Se imprime el valor actual
             
             }
-            
-            if (in_char == EOF) break;
-            
-            /*Se evalúa si el nuevo valor existe en la tabla*/
-            int existe = existeDefine(palabra); 
 
-            /*Si no existe, se pasa el valor al archivo temporal*/
-            if(existe == -1)
-            {
-                fputs(palabra, tmpFile); /*Se copia el valor al archivo temporal*/
+            /*
+                Si existe el identificador en la tabla de defines
+            */
+
+            else{
                 
+                concatenar = descomponerHileraDefine(yytext);
+                fputs(concatenar, tmpFile);
+                //fputs(defines[existe].vDefine, tmpFile); //Se obtiene la posición de la tabla en donde está y se imprime su valor correspondiente
+
             }
 
-            /*Si existe, busco el valor en la tabla y lo sustituyo para escribirlo en el archivo temporal*/
-            else  
-            {
-                
-                //char *p = valorDefine(defines[existe].vDefine, existe); /*Se llama a la función que devuelve el valor en la tabla*/
-                char *p = (char*)malloc(10);
-                p = descomponerHileraDefine(defines[existe].vDefine);
-                int contP = 0;
-                int contHilera = 0;
-                char hilera[300] = "";
-                //putchar(p[contHilera]);
-
-                /*Tomamos el valor que se rescata de los define y se va descomponiendo*/
-                while(p[contP] != '\0'){
-                    
-                    /*Se descompone por espacios*/
-                    if(!isspace(p[contP])){
-                        //strcpy(hilera, "ERROR");
-                        hilera[contHilera] = p[contP];
-                        contHilera++;
-                        
-                         
-                    }
-                    
-                    else{
-                        /*Si uno de los componentes es ERROR*/
-                        if(esError(hilera)){
-                            error = true;
-                            printf("Se ha encontrado un error al intentar sustituir '%s' en línea: %i, en el archivo %s\n", defines[existe].palabra, numeroLinea, nombreArchivo);
-                            
-                        }
-                        contHilera=0;
-                        memset(&hilera[0], 0, sizeof(hilera));
-        
-                    }
-                    
-
-                    contP++;
-                }
-
-                
-                if(esError(hilera)){
-                    error = true;
-                    printf("Se ha encontrado un error al intentar sustituir '%s' en línea: %i, en el archivo %s\n", defines[existe].palabra, numeroLinea, nombreArchivo);
-                    
-                }
-                
-
-                fputs(p, tmpFile); /*Se copia el valor al archivo temporal*/
-            }
-            if(in_char == '\n') numeroLinea++;
-            fputc(in_char, tmpFile);
-            
-             
         }
-        
-        /*Se reinician las variables que toman los diferentes valores del código fuente*/
-        a=0;
-        j=0;
-        i=0;
-        l=0;
-        memset(&palabra[0], 0, sizeof(palabra));
-        memset(&tipo[0], 0, sizeof(tipo));
-        memset(&vDefine[0], 0, sizeof(vDefine));
-        memset(&tipoContenido[0], 0, sizeof(tipoContenido));
-        
-        
+
+        /*
+            Si no es ninguno de los tres anteriores, solo se imprimirá el valor actual, no se toma en cuenta a los comentarios
+        */
+
+        else if (ntoken != COMMENT){
+
+            fputs(yytext, tmpFile);
+
+        }
+
+        printf("%s\n", yytext);
+        ntoken = nextToken();
         
     }
-                       
-    
+
 }
 
 void yyerror(char *texto,char *simbolo, int linea){
-     printf(texto,simbolo,linea);
-     strcat(CodBeamer,"\\colorbox{red}{");
-     if(strcmp(yytext, "$")==0 || strcmp(yytext,"#")==0){
-       strcat(CodBeamer, "\\");
-       }
-     strcat(CodBeamer, simbolo);
-     strcat(CodBeamer,"}");
+     
+     /*
+        Cuando aún se encuentra en el preprocesamiento, se escribe en el archivo
+    */
+    if(preproceso == false){
+        printf("%s\n", yytext);
+        fputs(yytext, tmpFile);
+    
+    }
+
+    /*
+        Cuando esté en el scanner, deberá imprimir el error correspondiente
+    */
+
+    else{
+        
+        printf(texto,simbolo,linea);
+        strcat(CodBeamer,"\\colorbox{red}{");
+        if(strcmp(yytext, "$")==0 || strcmp(yytext,"#")==0){
+            strcat(CodBeamer, "\\");
+        }
+        strcat(CodBeamer, simbolo);
+        strcat(CodBeamer,"}");
+    
+    }
 
 };
 
@@ -818,7 +856,8 @@ void openfilepreprocess(FILE *f, char *nombreArchivo){
     {
         printf("Se pudo leer el archivo correctamente\n");
         tmpFile = fopen("config.c", "wt");
-        preprocess(f, nombreArchivo);
+        preprocesador(nombreArchivo, f);
+        preproceso = true;
         fclose(tmpFile);
 	//error=false;
 
@@ -840,21 +879,58 @@ void limpiarDocumento(char *f){
 int main(int argc, char *argv[])
 {
     
+
+    /*
+        Se valida que se hayan digitado los archivos de entrada en la terminal
+    */
+
+    if(argv[1] == NULL){
+
+        printf("No se ingresó ningún archivo de entrada");
+     
+    }
+
+    /*
+        En este caso, se llama a las funcionalidades del preprocesador
+    */
+    else{
+        printf("HOLA");
+        FILE *archivoParaPreprocesar;
+        tmpFile = fopen("config.c", "wt");
+        archivoParaPreprocesar  = fopen(argv[1], "r");
+        
+
+        /*
+            Se le indica a flex cuál es el archivo actual que se está leyendo
+        */
+        yyin = archivoParaPreprocesar;  
+        yy_switch_to_buffer(yy_create_buffer( yyin, 50));     
+        
+        preprocesador(argv[1], archivoParaPreprocesar); //Se llama a la función del preprocesador con el archivo de entrada
+        printf("Termino");
+        
+        fclose(archivoParaPreprocesar);
+        fclose(tmpFile);
+        
+     }
+
+
+     /*
     FILE *f = leerArchivo(argv[1]);
     openfilepreprocess(f, argv[1]);
     if (error == false){
 
         FILE *temporal = fopen("config.c", "r");
         imprimirArchivoEntrada(temporal);
-        fclose(temporal);
-        scanner();
-        system("pdflatex main.tex");
-        system("evince --presentation main.pdf");
+        //fclose(temporal);
+        //scanner();
+        //system("pdflatex main.tex");
+        //system("evince --presentation main.pdf");
     }
 
 
 
-    limpiarDocumento("config.c");
+    limpiarDocumento("config.c");*/
 
 
     return 0; 

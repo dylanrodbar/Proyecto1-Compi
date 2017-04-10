@@ -41,10 +41,10 @@ int linea;
 
 [0-9][0-9]*		  return INTEGER;
 
-L?"/*"(\\.|[^\\"])*"*/"       		        return CONSTANT;
-"/*"((\*+[^/*])|([^*]))*\**"*/"             return CONSTANT;
-"/*"$*"*/"                		            return CONSTANT;
-"//".*$                  		            return CONSTANT;
+L?"/*"(\\.|[^\\"])*"*/"       		        return COMMENT;
+"/*"((\*+[^/*])|([^*]))*\**"*/"             return COMMENT;
+"/*"$*"*/"                		            return COMMENT;
+"//".*$                  		            return COMMENT;
 0[xX][a-fA-F0-9]+(u|U|l|L)*?	     		return CONSTANT; 
 0[0-9]+(u|U|l|L)*?		     		        return CONSTANT; 
 [0-9]+(u|U|l|L)*?		     		        return CONSTANT; 
@@ -105,15 +105,24 @@ L?'(\\.|[^\\'])+'	             		    return CONSTANT;
 ">>"			          return OPERATOR;
 "<<"			          return OPERATOR;
 
+"#include"				  return INCLUDE;
+"#define"				  return DEFINE;
+
+
+[[:space:]]               return SPACE;
 
 [a-zA-Z][_a-zA-Z0-9]*	  return IDENTIFIER;
+
 L?\"(\\.|[^\\"]|\n)*\"    return LITERAL;
 L?\'(\\.|[^\\"]|\n)*\'    return LITERAL;
 
 
 
+
+
                   
-[ \t\n]			  ;
+[ \t\n]
+			  ;
 .|[0-9]*[a-zA-Z][_a-zA-Z0-9]*   yyerror("Error léxico con \"%s\", en línea %i.\n",yytext,linea);
 
 
